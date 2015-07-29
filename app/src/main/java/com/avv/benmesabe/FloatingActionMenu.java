@@ -66,10 +66,10 @@ public class FloatingActionMenu extends ViewGroup {
 
     public FloatingActionMenu(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        mMenuItems = new ArrayList<>(5);
-        mMenuItemAnimators = new ArrayList<>(5);
+        mMenuItems = new ArrayList<>(3);
+        mMenuItemAnimators = new ArrayList<>(3);
 
-        mMenuItemLabels = new ArrayList<>(5);
+        mMenuItemLabels = new ArrayList<>(3);
         mIcon = new ImageView(context);
     }
 
@@ -90,9 +90,9 @@ public class FloatingActionMenu extends ViewGroup {
             }
         } else {
             mMenuButton = (FloatingActionButton) child;
-            mIcon.setImageDrawable(mMenuButton.getDrawable());
+            /*mIcon.setImageDrawable(mMenuButton.getDrawable());
             addView(mIcon);
-            mMenuButton.setImageDrawable(null);
+            mMenuButton.setImageDrawable(null);*/
             createDefaultIconAnimation();
             mMenuButton.setOnClickListener(new OnClickListener() {
                 @Override
@@ -197,19 +197,6 @@ public class FloatingActionMenu extends ViewGroup {
                 resolveSize(height, heightMeasureSpec));
     }
 
-//    Rect rect = new Rect();
-//    Paint paint = new Paint();
-//
-//    @Override
-//    protected boolean drawChild(@NonNull Canvas canvas, @NonNull View child, long drawingTime) {
-//        boolean b = super.drawChild(canvas, child, drawingTime);
-//        paint.setColor(0xFFFF0000);
-//        paint.setStyle(Paint.Style.STROKE);
-//        rect.set(child.getLeft(), child.getTop(), child.getRight(), child.getBottom());
-//        canvas.drawRect(rect, paint);
-//        return b;
-//    }
-
     @Override
     public boolean onTouchEvent(@NonNull MotionEvent event) {
         if (mIsSetClosedOnTouchOutside) {
@@ -302,14 +289,14 @@ public class FloatingActionMenu extends ViewGroup {
             }
         };
         ObjectAnimator collapseAnimator = ObjectAnimator.ofFloat(
-                mIcon,
+                mMenuButton,
                 "rotation",
                 135f,
                 0f
         );
 
         ObjectAnimator expandAnimator = ObjectAnimator.ofFloat(
-                mIcon,
+                mMenuButton,
                 "rotation",
                 0f,
                 135f

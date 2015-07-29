@@ -2,6 +2,7 @@ package com.avv.benmesabe;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -9,19 +10,19 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 
 public class BarcodeReaderActivity extends AppCompatActivity {
 
     private DrawerLayout mDrawerLayout;
+
+    private FloatingActionMenu fam;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,6 +43,14 @@ public class BarcodeReaderActivity extends AppCompatActivity {
         if (navigationView != null) {
             setupDrawerContent(navigationView);
         }
+
+        fam = (FloatingActionMenu) findViewById(R.id.fab_menu);
+        fam.setOnMenuItemClickListener(new FloatingActionMenu.OnMenuItemClickListener() {
+            @Override
+            public void onMenuItemClick(FloatingActionMenu fam, int index, FloatingActionButton item) {
+                scanQR();
+            }
+        });
     }
 
     private void setupDrawerContent(NavigationView navigationView) {
@@ -56,37 +65,15 @@ public class BarcodeReaderActivity extends AppCompatActivity {
                 });
     }
 
-    @OnClick(R.id.scanner2)
-    public void scanBar(View v) {
-        IntentIntegrator integrator = new IntentIntegrator(this);
-        integrator.addExtra("SCAN_WIDTH", 640);
-        integrator.addExtra("SCAN_HEIGHT", 480);
-        integrator.addExtra("SCAN_MODE", "QR_CODE_MODE");
-        //customize the prompt message before scanning
-        integrator.addExtra("PROMPT_MESSAGE", "Scanner Start!");
-        integrator.initiateScan(IntentIntegrator.QR_CODE_TYPES);
-    }
 
-    @OnClick(R.id.scanner)
-    public void scanQR(View v) {
+    public void scanQR() {
         IntentIntegrator integrator = new IntentIntegrator(this);
-        integrator.addExtra("SCAN_WIDTH", 640);
-        integrator.addExtra("SCAN_HEIGHT", 480);
-        integrator.addExtra("SCAN_MODE", "QR_CODE_MODE");
-        //customize the prompt message before scanning
-        integrator.addExtra("PROMPT_MESSAGE", "Scanner Start!");
-        integrator.initiateScan(IntentIntegrator.QR_CODE_TYPES);
-    }
-
-    @OnClick(R.id.fab)
-    public void scanFab(View v) {
-        IntentIntegrator integrator = new IntentIntegrator(this);
-        integrator.addExtra("SCAN_WIDTH", 640);
-        integrator.addExtra("SCAN_HEIGHT", 480);
-        integrator.addExtra("SCAN_MODE", "QR_CODE_MODE");
-        //customize the prompt message before scanning
-        integrator.addExtra("PROMPT_MESSAGE", "Scanner Start!");
-        integrator.initiateScan(IntentIntegrator.QR_CODE_TYPES);
+        integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES);
+        integrator.setPrompt("Scan a barcode");
+        integrator.setResultDisplayDuration(0);
+        integrator.setWide();  // Wide scanning rectangle, may work better for 1D barcodes
+        integrator.setCameraId(0);  // Use a specific camera of the device
+        integrator.initiateScan();
     }
 
     //on ActivityResult method
@@ -96,6 +83,7 @@ public class BarcodeReaderActivity extends AppCompatActivity {
             String contents = result.getContents();
             if (contents != null) {
                 Toast toast = Toast.makeText(this, result.toString(), Toast.LENGTH_SHORT);
+                toast.show();
             } else {
                 Toast toast = Toast.makeText(this, "Error "+result.toString(), Toast.LENGTH_SHORT);
             }

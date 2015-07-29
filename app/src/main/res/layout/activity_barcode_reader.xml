@@ -41,56 +41,29 @@
             android:textColor="#000000"
             android:textSize="30dp" />
 
-        <Button
-            android:id="@+id/scanner"
-            android:layout_width="250dp"
-            android:layout_height="80dp"
-            android:layout_gravity="center"
-            android:layout_margin="10dp"
-            android:gravity="center"
-            android:onClick="scanQR"
-            android:text="QR Code"
-            android:textSize="18dp" />
 
-        <Button
-            android:id="@+id/scanner2"
-            android:layout_width="250dp"
-            android:layout_height="80dp"
-            android:layout_gravity="center"
-            android:layout_margin="10dp"
-            android:gravity="center"
-            android:onClick="scanBar"
-            android:text="Bar Code"
-            android:textSize="18dp" />
-
-
-        <android.support.design.widget.FloatingActionButton
+        <!--<android.support.design.widget.FloatingActionButton
             android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:src="@drawable/ic_add_black"
             app:elevation="6dp"
-            app:pressedTranslationZ="12dp" />
+            app:pressedTranslationZ="12dp" />-->
+
+
     </LinearLayout>
 
-
-    <android.support.design.widget.NavigationView
-        android:id="@+id/nav_view"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:fitsSystemWindows="true"
-        app:headerLayout="@layout/nav_header"
-        app:menu="@menu/drawer_view" />
-
-
+        android:layout_margin="50dp">
     <com.avv.benmesabe.FloatingActionMenu
         android:id="@+id/fab_menu"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#88FFFFFF"
-        android:padding="16dp">
+        android:padding="30dp">
 
         <!--First button as menu button-->
         <android.support.design.widget.FloatingActionButton
@@ -105,7 +78,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
-            android:contentDescription="Scan"
+            android:contentDescription="QR"
             android:src="@drawable/ic_add_black"
             fab:fabSize="mini"/>
 
@@ -115,28 +88,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
-            android:contentDescription="Books"
-            android:src="@drawable/ic_add_black"
-            fab:fabSize="mini"/>
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab_custom"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:contentDescription="Custom"
-            android:src="@drawable/ic_add_black"
-            fab:fabSize="mini"/>
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab_batch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:contentDescription="batch"
+            android:contentDescription="NFC"
             android:src="@drawable/ic_add_black"
             fab:fabSize="mini"/>
     </com.avv.benmesabe.FloatingActionMenu>
+    </LinearLayout>
+
+    <android.support.design.widget.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true"
+        app:headerLayout="@layout/nav_header"
+        app:menu="@menu/drawer_view" />
+
+
+
 
 </android.support.v4.widget.DrawerLayout>
 
