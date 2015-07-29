@@ -26,10 +26,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
-
-/**
- * Created by angel on 29/07/2015.
- */
 public class FloatingActionMenu extends ViewGroup {
 
     private static final long ANIMATION_DURATION = 300;
