@@ -4,4 +4,8 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_barcode_reader">BarcodeReaderActivity</string>
+    <string name="textInfo">Aproximese a la tarjeta para su lectura</string>
+    <string name="ipsum">Producto</string>
+    <string name="menu_settings">Ajustes</string>
+
 </resources>

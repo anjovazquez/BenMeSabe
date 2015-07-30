@@ -79,7 +79,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:contentDescription="QR"
-            android:src="@drawable/ic_add_black"
+            android:src="@drawable/ic_qr"
             fab:fabSize="mini"/>
 
 
@@ -89,7 +89,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:contentDescription="NFC"
-            android:src="@drawable/ic_add_black"
+            android:src="@drawable/ic_nfc1_black"
             fab:fabSize="mini"/>
     </com.avv.benmesabe.FloatingActionMenu>
     </LinearLayout>
