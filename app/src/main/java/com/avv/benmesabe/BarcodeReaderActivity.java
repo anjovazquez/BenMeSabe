@@ -6,7 +6,6 @@ import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -14,13 +13,20 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.avv.benmesabe.picasso.CircleTransform;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+import com.karumi.expandableselector.ExpandableItem;
+import com.karumi.expandableselector.ExpandableSelector;
+import com.karumi.expandableselector.OnExpandableItemClickListener;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.ButterKnife;
 
@@ -29,7 +35,7 @@ public class BarcodeReaderActivity extends AppCompatActivity {
 
     private DrawerLayout mDrawerLayout;
 
-    private FloatingActionMenu fam;
+    /*private FloatingActionMenu fam;*/
     private NFCActionDialogFragment dialog;
 
     @Override
@@ -52,7 +58,7 @@ public class BarcodeReaderActivity extends AppCompatActivity {
             setupDrawerContent(navigationView);
         }
 
-        fam = (FloatingActionMenu) findViewById(R.id.fab_menu);
+      /*  fam = (FloatingActionMenu) findViewById(R.id.fab_menu);
         fam.setOnMenuItemClickListener(new FloatingActionMenu.OnMenuItemClickListener() {
             @Override
             public void onMenuItemClick(FloatingActionMenu fam, int index, FloatingActionButton item) {
@@ -68,10 +74,12 @@ public class BarcodeReaderActivity extends AppCompatActivity {
                         break;
                 }
             }
-        });
+        });*/
 
         final ImageView avatar = (ImageView) findViewById(R.id.avatar);
         Picasso.with(this).load("http://lorempixel.com/200/200/food/8").transform(new CircleTransform()).into(avatar);
+
+        initializeSizesExpandableSelector();
     }
 
     private void setupDrawerContent(NavigationView navigationView) {
@@ -143,17 +151,23 @@ public class BarcodeReaderActivity extends AppCompatActivity {
                 sb.append(tag.getTechList()[i]).append("\n");
             }
         }
-        Toast toast = Toast.makeText(this, this.readTag(intent), Toast.LENGTH_SHORT);
-        toast.show();
 
-        if(dialog!=null) {
-            this.dialog.dismiss();
+
+        String readResult = this.readTag(intent);
+        if(readResult!=null && !readResult.isEmpty()) {
+            Toast toast = Toast.makeText(this, readResult, Toast.LENGTH_SHORT);
+            toast.show();
+
+            if (dialog != null) {
+                this.dialog.dismiss();
+            }
+
+            Intent intentDetail = new Intent(BarcodeReaderActivity.this, DetailActivity.class);
+            intentDetail.putExtra(DetailActivity.EXTRA_NAME, "producto");
+
+            startActivity(intentDetail);
+
         }
-
-        Intent intentDetail = new Intent(BarcodeReaderActivity.this, DetailActivity.class);
-        intentDetail.putExtra(DetailActivity.EXTRA_NAME, "producto");
-
-        startActivity(intentDetail);
         /*this.tTechs.setText(this.getResources().getString(R.string.techs));
         this.tTechs.append("\n");
         this.tTechs.append(sb.toString());
@@ -188,5 +202,44 @@ public class BarcodeReaderActivity extends AppCompatActivity {
             }
         }
         return "";
+    }
+
+
+    private void initializeSizesExpandableSelector() {
+        final ExpandableSelector  sizesExpandableSelector = (ExpandableSelector) findViewById(R.id.es_sizes);
+        List<ExpandableItem> expandableItems = new ArrayList<ExpandableItem>();
+        expandableItems.add(new ExpandableItem( "XL"));
+        expandableItems.add(new ExpandableItem("L"));
+        expandableItems.add(new ExpandableItem("M"));
+        expandableItems.add(new ExpandableItem("S"));
+        sizesExpandableSelector.showExpandableItems(expandableItems);
+
+        sizesExpandableSelector.setOnExpandableItemClickListener(new OnExpandableItemClickListener() {
+            @Override
+            public void onExpandableItemClickListener(int index, View view) {
+                switch (index) {
+                    case 1:
+                        ExpandableItem firstItem = sizesExpandableSelector.getExpandableItem(1);
+                        swipeFirstItem(1, firstItem);
+                        break;
+                    case 2:
+                        ExpandableItem secondItem = sizesExpandableSelector.getExpandableItem(2);
+                        swipeFirstItem(2, secondItem);
+                        break;
+                    case 3:
+                        ExpandableItem fourthItem = sizesExpandableSelector.getExpandableItem(3);
+                        swipeFirstItem(3, fourthItem);
+                        break;
+                    default:
+                }
+                sizesExpandableSelector.collapse();
+            }
+
+            private void swipeFirstItem(int position, ExpandableItem clickedItem) {
+                ExpandableItem firstItem = sizesExpandableSelector.getExpandableItem(0);
+                sizesExpandableSelector.updateExpandableItem(0, clickedItem);
+                sizesExpandableSelector.updateExpandableItem(position, firstItem);
+            }
+        });
     }
 }

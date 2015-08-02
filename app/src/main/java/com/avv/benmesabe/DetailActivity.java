@@ -15,7 +15,7 @@ import com.squareup.picasso.Picasso;
  */
 public class DetailActivity extends AppCompatActivity {
 
-    public static final String EXTRA_NAME = "cheese_name";
+    public static final String EXTRA_NAME = "product_name";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -23,7 +23,7 @@ public class DetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
 
         Intent intent = getIntent();
-        final String cheeseName = intent.getStringExtra(EXTRA_NAME);
+        final String productName = intent.getStringExtra(EXTRA_NAME);
 
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -38,7 +38,6 @@ public class DetailActivity extends AppCompatActivity {
 
     private void loadBackdrop() {
         final ImageView imageView = (ImageView) findViewById(R.id.backdrop);
-        /*Picasso.with(this).load("http://lorempixel.com/200/200/food/1").centerCrop().into(imageView);*/
         Picasso.with(this).load("http://lorempixel.com/400/400/food/1").into(imageView);
     }
 
@@ -47,4 +46,11 @@ public class DetailActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_sample_actions, menu);
         return true;
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+
 }
