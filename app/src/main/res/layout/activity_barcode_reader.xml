@@ -52,7 +52,7 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="Nombre"
+            android:hint="No"
             android:textColorHint="@color/white"
             android:background="@drawable/edit_text_drawable"
             android:textColor="#ffffff"

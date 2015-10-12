@@ -1,3 +1,4 @@
+/*
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
@@ -22,4 +23,63 @@ allprojects {
             url "https://raw.github.com/embarkmobile/zxing-android-minimal/mvn-repo/maven-repository/"
         }
     }
+}*/
+apply from: 'buildsystem/ci.gradle'
+apply from: 'buildsystem/dependencies.gradle'
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:1.2.3'
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.4'
+    }
 }
+
+allprojects {
+    ext {
+        androidApplicationId = 'com.avv.benmesabe.app'
+        androidVersionCode = 1
+        androidVersionName = "1.0"
+        /*testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
+        testApplicationId = 'com.fernandocejas.android10.sample.presentation.test'*/
+
+        println("JAVA_HOME: " + System.getenv("JAVA_HOME"))
+        println("JAVA7_HOME: " + System.getenv("JAVA7_HOME"))
+        println("JAVA8_HOME: " + System.getenv("JAVA8_HOME"))
+        println("TEMP: " + System.getenv("TEMP"))
+    }
+
+    repositories {
+        jcenter()
+
+        mavenCentral()
+
+        maven {
+            url "https://raw.github.com/embarkmobile/zxing-android-minimal/mvn-repo/maven-repository/"
+        }
+    }
+}
+
+task wrapper(type: Wrapper) {
+    description 'Creates the gradle wrapper.'
+    gradleVersion '2.6'
+}
+
+/*task runDomainUnitTests(dependsOn: [':domain:test']) {
+    description 'Run unit tests for both domain and data layers.'
+}
+
+task runDataUnitTests(dependsOn: [':data:cleanTestDebug', ':data:testDebug']) {
+    description 'Run unit tests for both domain and data layers.'
+}
+
+task runUnitTests(dependsOn: ['runDomainUnitTests', 'runDataUnitTests']) {
+    description 'Run unit tests for both domain and data layers.'
+}
+
+task runAcceptanceTests(dependsOn: [':presentation:connectedAndroidTest']) {
+    description 'Run application acceptance tests.'
+}
+*/
