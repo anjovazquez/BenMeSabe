@@ -2,7 +2,7 @@ package com.avv.benmesabe.data.repository.datasource;
 
 import java.util.List;
 
-import entity.ProductEntity;
+import com.avv.benmesabe.data.entity.ProductEntity;
 import retrofit.Retrofit;
 import retrofit.http.GET;
 import rx.Observable;
@@ -17,7 +17,7 @@ public class CloudDataStore implements BenMeSabeDataStore {
     private BenMeSabeService benMeSabeService;
 
     public CloudDataStore(){
-        retrofit = new Retrofit.Builder().baseUrl("").build();
+        retrofit = new Retrofit.Builder().baseUrl("http://52.26.71.31:8080/RestMenus").build();
         benMeSabeService = retrofit.create(BenMeSabeService.class);
     }
 

@@ -6,7 +6,9 @@ import com.avv.benmesabe.domain.Product;
 
 import java.util.List;
 
-import entity.mapper.BenMeSabeDataMapper;
+import javax.inject.Inject;
+
+import com.avv.benmesabe.data.entity.mapper.BenMeSabeDataMapper;
 import rx.Observable;
 
 public class BenMeSabeRepository {
@@ -14,6 +16,7 @@ public class BenMeSabeRepository {
     private final BenMeSabeDataStoreFactory benMeSabeDataStoreFactory;
     private final BenMeSabeDataMapper benMeSabeDataMapper;
 
+    @Inject
     public BenMeSabeRepository(BenMeSabeDataStoreFactory benMeSabeDataStoreFactory, BenMeSabeDataMapper benMeSabeDataMapper){
         this.benMeSabeDataStoreFactory = benMeSabeDataStoreFactory;
         this.benMeSabeDataMapper = benMeSabeDataMapper;

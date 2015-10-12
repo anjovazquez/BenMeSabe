@@ -1,4 +1,4 @@
-package entity;
+package com.avv.benmesabe.data.entity;
 
 /**
  * Created by angel on 12/10/2015.

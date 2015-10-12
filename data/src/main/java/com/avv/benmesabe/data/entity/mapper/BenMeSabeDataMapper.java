@@ -1,4 +1,4 @@
-package entity.mapper;
+package com.avv.benmesabe.data.entity.mapper;
 
 import com.avv.benmesabe.domain.Product;
 
@@ -7,7 +7,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import entity.ProductEntity;
+import com.avv.benmesabe.data.entity.ProductEntity;
 
 /**
  * Created by angel on 12/10/2015.

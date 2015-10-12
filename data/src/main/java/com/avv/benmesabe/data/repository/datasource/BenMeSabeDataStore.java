@@ -3,7 +3,7 @@ package com.avv.benmesabe.data.repository.datasource;
 import java.util.List;
 import rx.Observable;
 
-import entity.ProductEntity;
+import com.avv.benmesabe.data.entity.ProductEntity;
 
 /**
  * Created by angel on 12/10/2015.

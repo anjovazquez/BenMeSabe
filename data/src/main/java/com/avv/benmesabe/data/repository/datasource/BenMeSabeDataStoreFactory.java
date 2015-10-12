@@ -2,6 +2,7 @@ package com.avv.benmesabe.data.repository.datasource;
 
 import android.content.Context;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 
 /**
@@ -12,7 +13,7 @@ public class BenMeSabeDataStoreFactory {
 
     private final Context context;
 
-
+    @Inject
     public BenMeSabeDataStoreFactory(Context context){
         this.context = context.getApplicationContext();
 
