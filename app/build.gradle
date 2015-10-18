@@ -115,8 +115,8 @@ dependencies {
     compile project(':domain')
     compile project(':data')
 
-    /*apt presentationDependencies.daggerCompiler*/
-    /*compile presentationDependencies.dagger*/
+    apt presentationDependencies.daggerCompiler
+    compile presentationDependencies.dagger
     compile presentationDependencies.butterKnife
     compile presentationDependencies.recyclerView
     compile presentationDependencies.rxJava

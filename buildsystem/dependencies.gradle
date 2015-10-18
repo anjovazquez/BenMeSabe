@@ -32,6 +32,8 @@ ext {
     testingSupportLibVersion = '0.1'
 
     presentationDependencies = [
+            daggerCompiler:     "com.google.dagger:dagger-compiler:${daggerVersion}",
+            dagger:             "com.google.dagger:dagger:${daggerVersion}",
             appCompat:          "com.android.support:appcompat-v7:22.2.1",
             cardView:           "com.android.support:cardview-v7:22.2.1",
             butterKnife:        "com.jakewharton:butterknife:7.0.1",

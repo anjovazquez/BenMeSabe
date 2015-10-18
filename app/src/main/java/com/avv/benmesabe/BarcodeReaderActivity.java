@@ -1,5 +1,6 @@
 package com.avv.benmesabe;
 
+import android.content.Context;
 import android.content.Intent;
 import android.nfc.NdefMessage;
 import android.nfc.NfcAdapter;
@@ -10,14 +11,22 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.avv.benmesabe.domain.Product;
 import com.avv.benmesabe.picasso.CircleTransform;
+import com.avv.benmesabe.presentation.activity.BaseActivity;
+import com.avv.benmesabe.presentation.adapter.ProductAdapter;
+import com.avv.benmesabe.presentation.internal.di.HasComponent;
+import com.avv.benmesabe.presentation.internal.di.components.DaggerProductComponent;
+import com.avv.benmesabe.presentation.internal.di.components.ProductComponent;
+import com.avv.benmesabe.presentation.presenter.ProductListPresenter;
+import com.avv.benmesabe.presentation.view.ProductListView;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.karumi.expandableselector.ExpandableItem;
@@ -26,17 +35,34 @@ import com.karumi.expandableselector.OnExpandableItemClickListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import butterknife.Bind;
 import butterknife.ButterKnife;
 
 
-public class BarcodeReaderActivity extends AppCompatActivity {
+public class BarcodeReaderActivity extends BaseActivity implements HasComponent<ProductComponent>, ProductListView {
 
     private DrawerLayout mDrawerLayout;
-
-    /*private FloatingActionMenu fam;*/
     private NFCActionDialogFragment dialog;
+
+    @Inject
+    ProductListPresenter productListPresenter;
+
+    @Bind(R.id.rv_products)
+    RecyclerView rv_products;
+
+    private ProductAdapter productsAdapter;
+
+    private ProductComponent productComponent;
+
+    @Override
+    public ProductComponent getComponent() {
+        return productComponent;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,29 +84,34 @@ public class BarcodeReaderActivity extends AppCompatActivity {
             setupDrawerContent(navigationView);
         }
 
-      /*  fam = (FloatingActionMenu) findViewById(R.id.fab_menu);
-        fam.setOnMenuItemClickListener(new FloatingActionMenu.OnMenuItemClickListener() {
-            @Override
-            public void onMenuItemClick(FloatingActionMenu fam, int index, FloatingActionButton item) {
-
-                switch (index){
-                    case 0:
-                        scanQR();
-                        break;
-                    case 1:
-                        scanNFC();
-                        break;
-                    default:
-                        break;
-                }
-            }
-        });*/
-
         final ImageView avatar = (ImageView) findViewById(R.id.avatar);
         Picasso.with(this).load("http://lorempixel.com/200/200/food/8").transform(new CircleTransform()).into(avatar);
 
         initializeSizesExpandableSelector();
+
+
+        setupUI();
+
+
+        getApplicationComponent().inject(this);
+
+        this.initializeInjector();
+
+
+
+        if(productListPresenter!=null) {
+            productListPresenter.setView(this);
+            loadProductList();
+        }
     }
+
+    private void initializeInjector() {
+        this.productComponent = DaggerProductComponent.builder()
+                .benMeSabeAppComponent(getApplicationComponent())
+                .activityModule(getActivityModule())
+                .build();
+    }
+
 
     private void setupDrawerContent(NavigationView navigationView) {
         navigationView.setNavigationItemSelectedListener(
@@ -208,10 +239,8 @@ public class BarcodeReaderActivity extends AppCompatActivity {
     private void initializeSizesExpandableSelector() {
         final ExpandableSelector  sizesExpandableSelector = (ExpandableSelector) findViewById(R.id.es_sizes);
         List<ExpandableItem> expandableItems = new ArrayList<ExpandableItem>();
-        expandableItems.add(new ExpandableItem( "XL"));
-        expandableItems.add(new ExpandableItem("L"));
-        expandableItems.add(new ExpandableItem("M"));
-        expandableItems.add(new ExpandableItem("S"));
+        expandableItems.add(new ExpandableItem("NFC"));
+        expandableItems.add(new ExpandableItem("QR"));
         sizesExpandableSelector.showExpandableItems(expandableItems);
 
         sizesExpandableSelector.setOnExpandableItemClickListener(new OnExpandableItemClickListener() {
@@ -241,5 +270,82 @@ public class BarcodeReaderActivity extends AppCompatActivity {
                 sizesExpandableSelector.updateExpandableItem(position, firstItem);
             }
         });
+    }
+
+
+    private void initialize() {
+    }
+
+
+
+    /**
+     * Loads all products.
+     */
+    private void loadProductList() {
+        this.productListPresenter.initialize();
+    }
+
+    private void setupUI() {
+
+        this.productsAdapter = new ProductAdapter(this, new ArrayList<Product>());
+        //this.productsAdapter.setOnItemClickListener(onItemClickListener);
+        this.rv_products.setAdapter(productsAdapter);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //loadProductList();
+        productListPresenter.resume();
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        productListPresenter.pause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        productListPresenter.destroy();
+    }
+
+    @Override
+    public void showLoading() {
+
+    }
+
+    @Override
+    public void hideLoading() {
+
+    }
+
+    @Override
+    public void showRetry() {
+
+    }
+
+    @Override
+    public void hideRetry() {
+
+    }
+
+    @Override
+    public void showError(String message) {
+
+    }
+
+    @Override
+    public Context getContext() {
+        return this;
+    }
+
+    @Override
+    public void renderProductList(Collection<Product> productModelCollection) {
+        if (productModelCollection != null) {
+            this.productsAdapter.setProductsCollection(productModelCollection);
+        }
     }
 }

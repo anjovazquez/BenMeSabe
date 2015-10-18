@@ -45,10 +45,10 @@ allprojects {
         /*testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
         testApplicationId = 'com.fernandocejas.android10.sample.presentation.test'*/
 
-        println("JAVA_HOME: " + System.getenv("JAVA_HOME"))
+        /*println("JAVA_HOME: " + System.getenv("JAVA_HOME"))
         println("JAVA7_HOME: " + System.getenv("JAVA7_HOME"))
         println("JAVA8_HOME: " + System.getenv("JAVA8_HOME"))
-        println("TEMP: " + System.getenv("TEMP"))
+        println("TEMP: " + System.getenv("TEMP"))*/
     }
 
     repositories {
