@@ -1,8 +1,11 @@
 package com.avv.benmesabe.data.repository.datasource;
 
+import com.avv.benmesabe.data.entity.ProductEntity;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import java.util.List;
 
-import com.avv.benmesabe.data.entity.ProductEntity;
 import retrofit.Retrofit;
 import retrofit.http.GET;
 import rx.Observable;
@@ -17,7 +20,12 @@ public class CloudDataStore implements BenMeSabeDataStore {
     private BenMeSabeService benMeSabeService;
 
     public CloudDataStore(){
-        retrofit = new Retrofit.Builder().baseUrl("http://52.26.71.31:8080/RestMenus").build();
+        Gson gson = new GsonBuilder().create();
+
+        retrofit = new Retrofit.Builder().
+                baseUrl("http://52.26.71.31:8080/RestMenus")
+                .build();
+
         benMeSabeService = retrofit.create(BenMeSabeService.class);
     }
 
@@ -35,12 +43,14 @@ public class CloudDataStore implements BenMeSabeDataStore {
             public void call(Subscriber<? super List<ProductEntity>> subscriber) {
 
                 try{
+                    benMeSabeService.listProduct();
                     List<ProductEntity> products = benMeSabeService.listProduct();
                     subscriber.onNext(products);
                     subscriber.onCompleted();
                 }
                 catch (Exception e){
-                    subscriber.onError(new Exception());
+                    e.printStackTrace();
+                    subscriber.onError(new Exception(e.getMessage()));
                 }
             }
         });

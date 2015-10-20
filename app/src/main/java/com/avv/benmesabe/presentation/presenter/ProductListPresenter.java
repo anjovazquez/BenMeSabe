@@ -23,7 +23,7 @@ import javax.inject.Named;
 @PerActivity
 public class ProductListPresenter extends DefaultSubscriber<List<Product>> implements Presenter {
 
-    private final UseCase getProductListUseCase;
+    private UseCase getProductListUseCase;
     private ProductListView viewListView;
 
     @Inject
@@ -92,6 +92,7 @@ public class ProductListPresenter extends DefaultSubscriber<List<Product>> imple
 
         @Override public void onError(Throwable e) {
             ProductListPresenter.this.hideViewLoading();
+            ((Exception) e).printStackTrace();
             ProductListPresenter.this.showErrorMessage(new DefaultErrorBundle((Exception) e));
             ProductListPresenter.this.showViewRetry();
         }

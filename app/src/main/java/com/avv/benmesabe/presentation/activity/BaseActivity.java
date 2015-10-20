@@ -12,7 +12,6 @@ import com.avv.benmesabe.presentation.internal.di.modules.ActivityModule;
  */
 public abstract class BaseActivity extends AppCompatActivity {
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
