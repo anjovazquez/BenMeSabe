@@ -21,6 +21,12 @@ android {
     compileSdkVersion globalConfiguration.getAt("androidCompileSdkVersion")
     buildToolsVersion globalConfiguration.getAt("androidBuildToolsVersion")
 
+    sourceSets {
+        test {
+            java.srcDirs = ['androidTest/java']
+        }
+    }
+
     defaultConfig {
         minSdkVersion globalConfiguration.getAt("androidMinSdkVersion")
         targetSdkVersion globalConfiguration.getAt("androidTargetSdkVersion")
@@ -62,12 +68,13 @@ dependencies {
     compile dataDependencies.rxJava
     compile dataDependencies.rxAndroid
     compile dataDependencies.androidAnnotations
-    compile 'com.squareup.retrofit:retrofit:2.0.0-beta2'
+    compile dataDependencies.retrofit
+    compile dataDependencies.retrofitGson
 
-    /*testCompile testDependencies.junit
-    testCompile testDependencies.assertj
-    testCompile testDependencies.mockito
-    testCompile testDependencies.robolectric*/
+    testCompile dataTestDependencies.junit
+    testCompile dataTestDependencies.assertj
+    testCompile dataTestDependencies.mockito
+    testCompile dataTestDependencies.robolectric
 }
 
 retrolambda {

@@ -43,7 +43,7 @@ allprojects {
         androidVersionCode = 1
         androidVersionName = "1.0"
         /*testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
-        testApplicationId = 'com.fernandocejas.android10.sample.presentation.test'*/
+        testApplicationId = 'com.avv.benmesabe.app.test'*/
 
         /*println("JAVA_HOME: " + System.getenv("JAVA_HOME"))
         println("JAVA7_HOME: " + System.getenv("JAVA7_HOME"))

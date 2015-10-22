@@ -1,11 +1,12 @@
 package com.avv.benmesabe.data.repository.datasource;
 
 import com.avv.benmesabe.data.entity.ProductEntity;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import java.util.List;
 
+import retrofit.Call;
+import retrofit.GsonConverterFactory;
+import retrofit.Response;
 import retrofit.Retrofit;
 import retrofit.http.GET;
 import rx.Observable;
@@ -20,18 +21,18 @@ public class CloudDataStore implements BenMeSabeDataStore {
     private BenMeSabeService benMeSabeService;
 
     public CloudDataStore(){
-        Gson gson = new GsonBuilder().create();
-
         retrofit = new Retrofit.Builder().
-                baseUrl("http://52.26.71.31:8080/RestMenus")
+                baseUrl("http://52.26.71.31:8080/")
+                .addConverterFactory(GsonConverterFactory.create())
+                //.addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();
 
         benMeSabeService = retrofit.create(BenMeSabeService.class);
     }
 
     public interface BenMeSabeService {
-        @GET("/product")
-        List<ProductEntity> listProduct();
+        @GET("/RestMenus/product")
+        Call<List<ProductEntity>> listProduct();
 
         /*@GET("/allergen")
         Call<List<Allergen>> listAllergen();*/
@@ -43,9 +44,9 @@ public class CloudDataStore implements BenMeSabeDataStore {
             public void call(Subscriber<? super List<ProductEntity>> subscriber) {
 
                 try{
-                    benMeSabeService.listProduct();
-                    List<ProductEntity> products = benMeSabeService.listProduct();
-                    subscriber.onNext(products);
+                    Call<List<ProductEntity>> productsCall = benMeSabeService.listProduct();
+                    Response<List<ProductEntity>> productsResponse = productsCall.execute();
+                    subscriber.onNext(productsResponse.body());
                     subscriber.onCompleted();
                 }
                 catch (Exception e){
