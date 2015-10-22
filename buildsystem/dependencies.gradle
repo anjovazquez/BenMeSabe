@@ -23,6 +23,17 @@ ext {
     androidAnnotationsVersion = '20.0.0'
     retrofitVersion = '2.0.0-beta2'
 
+    appcompatVersion = '22.2.1'
+    cardviewVersion = '22.2.1'
+    butterKnifeVersion = '7.0.1'
+    recyclerViewVersion = '22.2.1'
+    designVersion = '22.2.1'
+    zxingVersion = '2.0.0@aar'
+    zxingCoreVersion = '3.0.1'
+    picassoVersion = '2.5.2'
+    expandableSelectorVersion = '1.0.0'
+    layoutCastVersion = '1.+@aar'
+
     //Testing
     robolectricVersion = '3.0'
     jUnitVersion = '4.12'
@@ -35,19 +46,18 @@ ext {
     presentationDependencies = [
             daggerCompiler:     "com.google.dagger:dagger-compiler:${daggerVersion}",
             dagger:             "com.google.dagger:dagger:${daggerVersion}",
-            appCompat:          "com.android.support:appcompat-v7:22.2.1",
-            cardView:           "com.android.support:cardview-v7:22.2.1",
-            butterKnife:        "com.jakewharton:butterknife:7.0.1",
-            recyclerView:       "com.android.support:recyclerview-v7:22.2.1",
-            design:             "com.android.support:design:22.2.1",
-            zxingMinimal:       "com.embarkmobile:zxing-android-minimal:2.0.0@aar",
-            zxingLegacy:        "com.embarkmobile:zxing-android-legacy:2.0.0@aar",
-            zxingIntegration:   "com.embarkmobile:zxing-android-integration:2.0.0@aar",
-            zxingCore:          "com.google.zxing:core:3.0.1",
-            retrofit:           "com.squareup.retrofit:retrofit:2.0.0-beta2",
-            picasso:            "com.squareup.picasso:picasso:2.5.2",
-            expandableSelector: "com.karumi:expandableselector:1.0.0",
-            layoutcast:         "com.github.mmin18.layoutcast:library:1.+@aar",
+            appCompat:          "com.android.support:appcompat-v7:${appcompatVersion}",
+            cardView:           "com.android.support:cardview-v7:${cardviewVersion}",
+            butterKnife:        "com.jakewharton:butterknife:${butterKnifeVersion}",
+            recyclerView:       "com.android.support:recyclerview-v7:${recyclerViewVersion}",
+            design:             "com.android.support:design:${designVersion}",
+            zxingMinimal:       "com.embarkmobile:zxing-android-minimal:${zxingVersion}",
+            zxingLegacy:        "com.embarkmobile:zxing-android-legacy:${zxingVersion}",
+            zxingIntegration:   "com.embarkmobile:zxing-android-integration:${zxingVersion}",
+            zxingCore:          "com.google.zxing:core:${zxingCoreVersion}",
+            picasso:            "com.squareup.picasso:picasso:${picassoVersion}",
+            expandableSelector: "com.karumi:expandableselector:${expandableSelectorVersion}",
+            layoutcast:         "com.github.mmin18.layoutcast:library:${layoutCastVersion}",
             rxJava:             "io.reactivex:rxjava:${rxJavaVersion}",
             rxAndroid:          "io.reactivex:rxandroid:${rxAndroidVersion}",
             javaxAnnotation:    "javax.annotation:jsr250-api:${javaxAnnotationVersion}",
