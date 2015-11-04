@@ -30,4 +30,12 @@
     <dimen name="expandable_selector_margin">10dp</dimen>
     <dimen name="background_radius">100dp</dimen>
 
+    <dimen name="cardWidth">150dp</dimen>
+    <dimen name="cardHeight">200dp</dimen>
+
+    <dimen name="imageViewWidth">150dp</dimen>
+    <dimen name="imageViewHeight">85dp</dimen>
+
+    <dimen name="menuOptionImageHeight">85dp</dimen>
+
 </resources>

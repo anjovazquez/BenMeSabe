@@ -1,5 +1,7 @@
 package com.avv.benmesabe.data.repository.datasource;
 
+import com.avv.benmesabe.data.entity.AllergenEntity;
+import com.avv.benmesabe.data.entity.IngredientEntity;
 import com.avv.benmesabe.data.entity.ProductEntity;
 
 import java.util.List;
@@ -9,6 +11,7 @@ import retrofit.GsonConverterFactory;
 import retrofit.Response;
 import retrofit.Retrofit;
 import retrofit.http.GET;
+import retrofit.http.Path;
 import rx.Observable;
 import rx.Subscriber;
 
@@ -34,8 +37,14 @@ public class CloudDataStore implements BenMeSabeDataStore {
         @GET("/RestMenus/product")
         Call<List<ProductEntity>> listProduct();
 
-        /*@GET("/allergen")
-        Call<List<Allergen>> listAllergen();*/
+        @GET("/RestMenus/product/{productId}")
+        Call<List<ProductEntity>> getProduct(@Path("productId") Number productId);
+
+        @GET("/RestMenus/product/{productId}/ingredient")
+        Call<List<IngredientEntity>> listProductIngredients(@Path("productId") Number productId);
+
+        @GET("/RestMenus/product/{productId}/allergen")
+        Call<List<AllergenEntity>> listProductAllergens(@Path("productId") Number productId);
     }
 
     public Observable<List<ProductEntity>> productEntityList(){
@@ -47,6 +56,47 @@ public class CloudDataStore implements BenMeSabeDataStore {
                     Call<List<ProductEntity>> productsCall = benMeSabeService.listProduct();
                     Response<List<ProductEntity>> productsResponse = productsCall.execute();
                     subscriber.onNext(productsResponse.body());
+                    subscriber.onCompleted();
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                    subscriber.onError(new Exception(e.getMessage()));
+                }
+            }
+        });
+    }
+
+
+    @Override
+    public Observable<List<IngredientEntity>> getProductIngredients(final Number productId) {
+        return Observable.create(new Observable.OnSubscribe<List<IngredientEntity>>(){
+            @Override
+            public void call(Subscriber<? super List<IngredientEntity>> subscriber) {
+
+                try{
+                    Call<List<IngredientEntity>> productIngredientsCall = benMeSabeService.listProductIngredients(productId);
+                    Response<List<IngredientEntity>> ingredientsResponse = productIngredientsCall.execute();
+                    subscriber.onNext(ingredientsResponse.body());
+                    subscriber.onCompleted();
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                    subscriber.onError(new Exception(e.getMessage()));
+                }
+            }
+        });
+    }
+
+    @Override
+    public Observable<List<AllergenEntity>> getProductAllergens(final Number productId) {
+        return Observable.create(new Observable.OnSubscribe<List<AllergenEntity>>(){
+            @Override
+            public void call(Subscriber<? super List<AllergenEntity>> subscriber) {
+
+                try{
+                    Call<List<AllergenEntity>> productAllergensCAll = benMeSabeService.listProductAllergens(productId);
+                    Response<List<AllergenEntity>> allergensResponse = productAllergensCAll.execute();
+                    subscriber.onNext(allergensResponse.body());
                     subscriber.onCompleted();
                 }
                 catch (Exception e){

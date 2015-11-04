@@ -1,6 +1,5 @@
 package com.avv.benmesabe;
 
-import android.content.Context;
 import android.content.Intent;
 import android.nfc.NdefMessage;
 import android.nfc.NfcAdapter;
@@ -8,26 +7,22 @@ import android.nfc.Tag;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.avv.benmesabe.domain.Product;
 import com.avv.benmesabe.picasso.CircleTransform;
 import com.avv.benmesabe.presentation.activity.BaseActivity;
-import com.avv.benmesabe.presentation.adapter.ProductAdapter;
 import com.avv.benmesabe.presentation.internal.di.HasComponent;
 import com.avv.benmesabe.presentation.internal.di.components.DaggerProductComponent;
 import com.avv.benmesabe.presentation.internal.di.components.ProductComponent;
-import com.avv.benmesabe.presentation.presenter.ProductListPresenter;
-import com.avv.benmesabe.presentation.view.ProductListView;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.karumi.expandableselector.ExpandableItem;
@@ -36,29 +31,29 @@ import com.karumi.expandableselector.OnExpandableItemClickListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-
-import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 
-public class BarcodeReaderActivity extends BaseActivity implements HasComponent<ProductComponent>, ProductListView {
+public class BarcodeReaderActivity extends BaseActivity implements HasComponent<ProductComponent> {
 
-    private DrawerLayout mDrawerLayout;
     private NFCActionDialogFragment dialog;
-
-    @Inject
-    ProductListPresenter productListPresenter;
-
-    @Bind(R.id.rv_products)
-    RecyclerView rv_products;
-
-    private ProductAdapter productsAdapter;
-
     private ProductComponent productComponent;
+
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
+
+    @Bind(R.id.drawer_layout)
+    DrawerLayout mDrawerLayout;
+
+    @Bind(R.id.avatar)
+    ImageView avatar;
+
+    @Bind(R.id.scan_options)
+    ExpandableSelector scanOptionSelector;
+
 
     @Override
     public ProductComponent getComponent() {
@@ -71,7 +66,6 @@ public class BarcodeReaderActivity extends BaseActivity implements HasComponent<
         setContentView(R.layout.activity_barcode_reader);
         ButterKnife.bind(this);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         final ActionBar ab = getSupportActionBar();
@@ -85,30 +79,25 @@ public class BarcodeReaderActivity extends BaseActivity implements HasComponent<
             setupDrawerContent(navigationView);
         }
 
-        final ImageView avatar = (ImageView) findViewById(R.id.avatar);
         Picasso.with(this).load("http://lorempixel.com/200/200/food/8").transform(new CircleTransform()).into(avatar);
-
-        initializeSizesExpandableSelector();
-
-
-        setupUI();
-
-
-        rv_products.setLayoutManager(new LinearLayoutManager(this));
 
         getApplicationComponent().inject(this);
 
         this.initializeInjector();
 
-        //productListPresenter = new ProductListPresenter();
-
         productComponent.inject(this);
 
-        if(productListPresenter!=null) {
-            productListPresenter.setView(this);
-            loadProductList();
-        }
+        //Establecer el PageAdapter del componente ViewPager
+        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+        viewPager.setAdapter(new MenuFragmentPageAdapter(
+                getSupportFragmentManager()));
 
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.appbartabs);
+        tabLayout.setTabMode(TabLayout.MODE_FIXED);
+        tabLayout.setupWithViewPager(viewPager);
+
+
+        initializeSizesExpandableSelector();
 
     }
 
@@ -175,12 +164,10 @@ public class BarcodeReaderActivity extends BaseActivity implements HasComponent<
 
     @Override
     protected void onNewIntent(Intent intent) {
-
         this.readTagMsg(intent);
     }
 
     private void readTagMsg(Intent intent) {
-
 
         Tag tag = (Tag) intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
         StringBuffer sb = new StringBuffer();
@@ -201,21 +188,11 @@ public class BarcodeReaderActivity extends BaseActivity implements HasComponent<
             }
 
             Intent intentDetail = new Intent(BarcodeReaderActivity.this, DetailActivity.class);
-            intentDetail.putExtra(DetailActivity.EXTRA_NAME, "producto");
+            intentDetail.putExtra(DetailActivity.EXTRA_PRODUCT_URL, "producto");
 
             startActivity(intentDetail);
 
         }
-        /*this.tTechs.setText(this.getResources().getString(R.string.techs));
-        this.tTechs.append("\n");
-        this.tTechs.append(sb.toString());
-
-        if (this.tag != null) {
-            this.tMessage.setText(this.getResources().getString(
-                    R.string.message));
-            this.tMessage.append("\n");
-            this.tMessage.append(this.readTag(intent));
-        }*/
     }
 
 
@@ -244,115 +221,55 @@ public class BarcodeReaderActivity extends BaseActivity implements HasComponent<
 
 
     private void initializeSizesExpandableSelector() {
-        final ExpandableSelector  sizesExpandableSelector = (ExpandableSelector) findViewById(R.id.es_sizes);
         List<ExpandableItem> expandableItems = new ArrayList<ExpandableItem>();
+        expandableItems.add(new ExpandableItem("Scan"));
         expandableItems.add(new ExpandableItem("NFC"));
         expandableItems.add(new ExpandableItem("QR"));
-        sizesExpandableSelector.showExpandableItems(expandableItems);
+        scanOptionSelector.showExpandableItems(expandableItems);
 
-        sizesExpandableSelector.setOnExpandableItemClickListener(new OnExpandableItemClickListener() {
+        scanOptionSelector.setOnExpandableItemClickListener(new OnExpandableItemClickListener() {
             @Override
             public void onExpandableItemClickListener(int index, View view) {
                 switch (index) {
                     case 1:
-                        ExpandableItem firstItem = sizesExpandableSelector.getExpandableItem(1);
-                        swipeFirstItem(1, firstItem);
+                        ExpandableItem firstItem = scanOptionSelector.getExpandableItem(1);
+                        //swipeFirstItem(1, firstItem);
+                        scanNFC();
                         break;
                     case 2:
-                        ExpandableItem secondItem = sizesExpandableSelector.getExpandableItem(2);
-                        swipeFirstItem(2, secondItem);
+                        ExpandableItem secondItem = scanOptionSelector.getExpandableItem(2);
+                        //swipeFirstItem(2, secondItem);
+                        scanQR();
                         break;
                     case 3:
-                        ExpandableItem fourthItem = sizesExpandableSelector.getExpandableItem(3);
-                        swipeFirstItem(3, fourthItem);
+                        ExpandableItem thirdItem = scanOptionSelector.getExpandableItem(3);
+                        //swipeFirstItem(3, fourthItem);
                         break;
                     default:
                 }
-                sizesExpandableSelector.collapse();
+                scanOptionSelector.collapse();
             }
 
             private void swipeFirstItem(int position, ExpandableItem clickedItem) {
-                ExpandableItem firstItem = sizesExpandableSelector.getExpandableItem(0);
-                sizesExpandableSelector.updateExpandableItem(0, clickedItem);
-                sizesExpandableSelector.updateExpandableItem(position, firstItem);
+                ExpandableItem firstItem = scanOptionSelector.getExpandableItem(0);
+                scanOptionSelector.updateExpandableItem(0, clickedItem);
+                scanOptionSelector.updateExpandableItem(position, firstItem);
             }
         });
-    }
-
-
-    private void initialize() {
-    }
-
-
-
-    /**
-     * Loads all products.
-     */
-    private void loadProductList() {
-        this.productListPresenter.initialize();
-    }
-
-    private void setupUI() {
-
-        this.productsAdapter = new ProductAdapter(this, new ArrayList<Product>());
-        //this.productsAdapter.setOnItemClickListener(onItemClickListener);
-        this.rv_products.setAdapter(productsAdapter);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        //loadProductList();
-        productListPresenter.resume();
-
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        productListPresenter.pause();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        productListPresenter.destroy();
-    }
-
-    @Override
-    public void showLoading() {
-
-    }
-
-    @Override
-    public void hideLoading() {
-
-    }
-
-    @Override
-    public void showRetry() {
-
-    }
-
-    @Override
-    public void hideRetry() {
-
-    }
-
-    @Override
-    public void showError(String message) {
-
-    }
-
-    @Override
-    public Context getContext() {
-        return this;
-    }
-
-    @Override
-    public void renderProductList(Collection<Product> productModelCollection) {
-        if (productModelCollection != null) {
-            this.productsAdapter.setProductsCollection(productModelCollection);
-        }
     }
 }

@@ -1,14 +1,17 @@
 package com.avv.benmesabe.presentation.adapter;
 
 import android.content.Context;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.avv.benmesabe.R;
 import com.avv.benmesabe.domain.Product;
+import com.squareup.picasso.Picasso;
 
 import java.util.Collection;
 import java.util.List;
@@ -23,13 +26,14 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
     private final LayoutInflater layoutInflater;
     private List<Product> productCollection;
+    private Context context;
 
 
     public ProductAdapter(Context context, Collection<Product> productCollection) {
-        //this.validateUsersCollection(usersCollection);
         this.layoutInflater =
                 (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.productCollection = (List<Product>) productCollection;
+        this.context = context;
     }
 
     @Override
@@ -43,9 +47,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     @Override
     public void onBindViewHolder(ProductViewHolder holder, int position) {
         final Product product = this.productCollection.get(position);
-        holder.textViewTitle.setText(product.getDescription());
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
+        holder.textViewTitle.setText(product.getProductName());
+        Picasso.with(context).load(product.getImageURL()).into(holder.imageProduct);
+        holder.contentCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 if (ProductAdapter.this.onItemClickListener != null) {
                     ProductAdapter.this.onItemClickListener.onProductItemClicked(product);
                 }
@@ -59,24 +65,29 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     }
 
     public void setProductsCollection(Collection<Product> productCollection) {
-        //this.validateUsersCollection(usersCollection);
         this.productCollection = (List<Product>) productCollection;
         this.notifyDataSetChanged();
     }
 
-    private OnItemClickListener onItemClickListener;
+    private OnProductItemClickListener onItemClickListener;
 
-    public void setOnItemClickListener (OnItemClickListener onItemClickListener) {
+    public void setOnProductItemClickListener (OnProductItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
     }
 
-    public interface OnItemClickListener {
+    public interface OnProductItemClickListener {
         void onProductItemClicked(Product product);
     }
 
     static class ProductViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.title)
         TextView textViewTitle;
+        @Bind(R.id.imageProduct)
+        ImageView imageProduct;
+        @Bind(R.id.cardView)
+        CardView productCardView;
+        @Bind(R.id.contentCardView)
+        View contentCardView;
 
         public ProductViewHolder(View itemView) {
             super(itemView);

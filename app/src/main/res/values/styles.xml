@@ -43,4 +43,33 @@
         <item name="android:background">@drawable/item_brown</item>
     </style>
 
+
+    <style name="card">
+        <item name="android:layout_width">@dimen/cardWidth</item>
+        <item name="android:layout_height">@dimen/cardHeight</item>
+    </style>
+
+    <style name="card.image">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/menuOptionImageHeight</item>
+        <item name="android:scaleType">centerCrop</item>
+        <item name="android:layout_weight">0.3</item>
+    </style>
+
+    <style name="card.description">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minLines">2</item>
+        <item name="android:maxLines">3</item>
+        <item name="android:layout_weight">0.5</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="allergenIcon">
+        <item name="android:layout_width">35dp</item>
+        <item name="android:layout_height">35dp</item>
+    </style>
+
 </resources>

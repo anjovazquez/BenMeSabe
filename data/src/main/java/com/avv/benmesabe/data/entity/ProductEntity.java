@@ -5,7 +5,7 @@ package com.avv.benmesabe.data.entity;
  */
 public class ProductEntity {
 
-    private String productId;
+    private Number productId;
     private String productName;
     private String description;
     private String imageURL;
@@ -34,11 +34,11 @@ public class ProductEntity {
         this.imageURL = imageURL;
     }
 
-    public String getProductId() {
+    public Number getProductId() {
         return productId;
     }
 
-    public void setProductId(String productId) {
+    public void setProductId(Number productId) {
         this.productId = productId;
     }
 }

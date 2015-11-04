@@ -57,6 +57,127 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/card_margin">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="110dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/gray"
+                        android:text="Alergenos"
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        android:padding="8dp"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.8"
+                        android:gravity="left|center_vertical"
+                        android:padding="5dp">
+                        <ImageView
+                            style="@style/allergenIcon"
+                            android:src="@drawable/gluten"
+                            android:tag="al1"/>
+                        <ImageView
+                            style="@style/allergenIcon"
+                            android:src="@drawable/crustaceos"
+                            android:tag="al2"/>
+                        <ImageView
+                            style="@style/allergenIcon"
+                            android:src="@drawable/huevos"
+                            android:tag="al3"/>
+                        <ImageView
+                            style="@style/allergenIcon"
+                            android:src="@drawable/pescados"
+                            android:tag="al4"/>
+                        <ImageView
+                            style="@style/allergenIcon"
+                            android:src="@drawable/cacahuetes"
+                            android:tag="al5"/>
+                        <ImageView
+                            style="@style/allergenIcon"
+                            android:src="@drawable/soja"
+                            android:tag="al6"/>
+                        <ImageView
+                            style="@style/allergenIcon"
+                            android:src="@drawable/lacteos"
+                            android:tag="al7"/>
+                        <ImageView
+                            style="@style/allergenIcon"
+                            android:src="@drawable/frutossecos"
+                            android:tag="al8"/>
+                        <ImageView
+                            style="@style/allergenIcon"
+                            android:src="@drawable/apio"
+                            android:tag="al9"/>
+                        <ImageView
+                            style="@style/allergenIcon"
+                            android:src="@drawable/mostaza"
+                            android:tag="al10"/>
+                        <ImageView
+                            style="@style/allergenIcon"
+                            android:src="@drawable/sesamo"
+                            android:tag="al11"/>
+                        <ImageView
+                            style="@style/allergenIcon"
+                            android:src="@drawable/dioxidoazufre"
+                            android:tag="al12"/>
+                        <ImageView
+                            style="@style/allergenIcon"
+                            android:src="@drawable/moluscos"
+                            android:tag="al13"/>
+                        <ImageView
+                            style="@style/allergenIcon"
+                            android:src="@drawable/altramuces"
+                            android:tag="al14"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/card_margin">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/gray"
+                android:text="Ingredientes"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:padding="8dp"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/ingredientList"
+                android:scrollbars="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.8"/>
+        </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+
+    </LinearLayout>
+
+        <!--<LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingTop="24dp">
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/card_margin">
 
                 <LinearLayout
                     style="@style/Widget.CardContent"
@@ -66,13 +187,13 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Info"
+                        android:text="Descripión"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
                     <TextView
+                        android:id="@+id/productDescription"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/ipsum" />
+                        android:layout_height="wrap_content" />
 
                 </LinearLayout>
 
@@ -133,6 +254,7 @@
             </android.support.v7.widget.CardView>
 
         </LinearLayout>
+        -->
 
     </android.support.v4.widget.NestedScrollView>
 
