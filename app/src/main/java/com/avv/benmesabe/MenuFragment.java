@@ -11,6 +11,8 @@ import android.view.ViewGroup;
  */
 public class MenuFragment extends Fragment {
 
+    public static final String NAME = "MenuFragment";
+
     public static MenuFragment newInstance() {
         MenuFragment fragment = new MenuFragment();
         return fragment;
@@ -30,5 +32,14 @@ public class MenuFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.menu_fragment, container, false);
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+
+        if(isVisibleToUser) {
+            ((BarcodeReaderActivity)getActivity()).setFloatingMenuOptions(MenuFragment.NAME);
+        }
     }
 }

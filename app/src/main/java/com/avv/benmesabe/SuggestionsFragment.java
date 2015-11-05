@@ -31,6 +31,8 @@ import butterknife.ButterKnife;
  */
 public class SuggestionsFragment extends Fragment implements ProductListView, ProductAdapter.OnProductItemClickListener {
 
+    public static final String NAME = "SuggestionsFragment";
+
     @Bind(R.id.rv_products)
     RecyclerView rv_products;
 
@@ -138,5 +140,14 @@ public class SuggestionsFragment extends Fragment implements ProductListView, Pr
         intentDetail.putExtra(DetailActivity.EXTRA_PRODUCT_DESC, product.getDescription());
 
         startActivity(intentDetail);
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+
+        if(isVisibleToUser) {
+            ((BarcodeReaderActivity)getActivity()).setFloatingMenuOptions(SuggestionsFragment.NAME);
+        }
     }
 }

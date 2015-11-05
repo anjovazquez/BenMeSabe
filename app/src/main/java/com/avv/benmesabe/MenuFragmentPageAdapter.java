@@ -11,7 +11,7 @@ public class MenuFragmentPageAdapter extends FragmentPagerAdapter {
 
     final int PAGE_COUNT = 3;
     private String tabTitles[] =
-            new String[] {"Sugerencias", "Menú", "Scan"};
+            new String[] {"Sugerencias", "Menú", "Pedido"};
 
     public MenuFragmentPageAdapter(FragmentManager fm) {
         super(fm);
@@ -35,7 +35,8 @@ public class MenuFragmentPageAdapter extends FragmentPagerAdapter {
                 f = MenuFragment.newInstance();
                 break;
             case 2:
-                f = ScanFragment.newInstance();
+                //f = ScanFragment.newInstance();
+                f = OrderFragment.newInstance();
                 break;
         }
 

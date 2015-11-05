@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.avv.benmesabe.domain.order.OrderManager;
 import com.avv.benmesabe.picasso.CircleTransform;
 import com.avv.benmesabe.presentation.activity.BaseActivity;
 import com.avv.benmesabe.presentation.internal.di.HasComponent;
@@ -97,7 +98,7 @@ public class BarcodeReaderActivity extends BaseActivity implements HasComponent<
         tabLayout.setupWithViewPager(viewPager);
 
 
-        initializeSizesExpandableSelector();
+        initializeScanOptionsExpandableSelector();
 
     }
 
@@ -220,7 +221,7 @@ public class BarcodeReaderActivity extends BaseActivity implements HasComponent<
     }
 
 
-    private void initializeSizesExpandableSelector() {
+    private void initializeScanOptionsExpandableSelector() {
         List<ExpandableItem> expandableItems = new ArrayList<ExpandableItem>();
         expandableItems.add(new ExpandableItem("Scan"));
         expandableItems.add(new ExpandableItem("NFC"));
@@ -271,5 +272,44 @@ public class BarcodeReaderActivity extends BaseActivity implements HasComponent<
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    public void setFloatingMenuOptions(String mode){
+        switch(mode){
+            case OrderFragment.NAME:
+                initializeOrderExpandableSelector();
+                break;
+            default:
+                initializeScanOptionsExpandableSelector();
+                break;
+        }
+
+    }
+
+
+    private void initializeOrderExpandableSelector() {
+        List<ExpandableItem> expandableItems = new ArrayList<ExpandableItem>();
+        expandableItems.add(new ExpandableItem("Opt"));
+        expandableItems.add(new ExpandableItem("Close"));
+        scanOptionSelector.showExpandableItems(expandableItems);
+
+        scanOptionSelector.setOnExpandableItemClickListener(new OnExpandableItemClickListener() {
+            @Override
+            public void onExpandableItemClickListener(int index, View view) {
+                switch (index) {
+                    case 1:
+                        ExpandableItem firstItem = scanOptionSelector.getExpandableItem(1);
+                        //swipeFirstItem(1, firstItem);
+                        OrderManager.getInstance().closeOrder();
+                        break;
+                    case 2:
+                        ExpandableItem secondItem = scanOptionSelector.getExpandableItem(2);
+                        //swipeFirstItem(1, firstItem);
+                        break;
+                    default:
+                }
+                scanOptionSelector.collapse();
+            }
+        });
     }
 }

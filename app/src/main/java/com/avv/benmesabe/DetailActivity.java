@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -13,6 +14,8 @@ import android.widget.ImageView;
 
 import com.avv.benmesabe.domain.Allergen;
 import com.avv.benmesabe.domain.Ingredient;
+import com.avv.benmesabe.domain.Product;
+import com.avv.benmesabe.domain.order.OrderManager;
 import com.avv.benmesabe.presentation.activity.BaseActivity;
 import com.avv.benmesabe.presentation.adapter.IngredientAdapter;
 import com.avv.benmesabe.presentation.internal.di.HasComponent;
@@ -51,9 +54,15 @@ public class DetailActivity extends BaseActivity implements HasComponent<Product
     @Bind(R.id.ingredientList)
     RecyclerView rvProductIngredients;
 
+
+
+    @Bind(R.id.addProduct)
+    FloatingActionButton bAddProduct;
+
     private String imageURL;
     private String description;
     private Integer productId;
+    private String productName;
 
     @Inject
     DetailProductPresenter detailProductPresenter;
@@ -77,7 +86,7 @@ public class DetailActivity extends BaseActivity implements HasComponent<Product
 
         if (productURL == null){
             productId = intent.getIntExtra(EXTRA_PRODUCT_ID, 0);
-            final String productName = intent.getStringExtra(EXTRA_PRODUCT_NAME);
+            productName = intent.getStringExtra(EXTRA_PRODUCT_NAME);
             imageURL = intent.getStringExtra(EXTRA_PRODUCT_IMAGEURL);
             description = intent.getStringExtra(EXTRA_PRODUCT_DESC);
             //productDescription.setText(description);
@@ -96,6 +105,21 @@ public class DetailActivity extends BaseActivity implements HasComponent<Product
 
         detailProductPresenter.setView(this);
         detailProductPresenter.initialize();
+
+
+        bAddProduct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Product product = new Product();
+                product.setProductId(productId);
+                product.setProductName(productName);
+                product.setImageURL(imageURL);
+                product.setDescription(description);
+                OrderManager.getInstance().addProduct(product);
+
+                finish();
+            }
+        });
     }
 
     @Override
