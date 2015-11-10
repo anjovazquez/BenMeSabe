@@ -1,18 +1,25 @@
 package com.avv.benmesabe;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.nfc.NdefMessage;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -21,9 +28,14 @@ import android.widget.Toast;
 import com.avv.benmesabe.domain.order.OrderManager;
 import com.avv.benmesabe.picasso.CircleTransform;
 import com.avv.benmesabe.presentation.activity.BaseActivity;
+import com.avv.benmesabe.presentation.activity.BenMeSabeIntro;
+import com.avv.benmesabe.presentation.gcm.service.BenMeSabePreferences;
+import com.avv.benmesabe.presentation.gcm.service.RegistrationIntentService;
 import com.avv.benmesabe.presentation.internal.di.HasComponent;
 import com.avv.benmesabe.presentation.internal.di.components.DaggerProductComponent;
 import com.avv.benmesabe.presentation.internal.di.components.ProductComponent;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.karumi.expandableselector.ExpandableItem;
@@ -40,6 +52,8 @@ import butterknife.ButterKnife;
 
 public class BarcodeReaderActivity extends BaseActivity implements HasComponent<ProductComponent> {
 
+    private static final String TAG = "BarcodeReaderActivity";
+
     private NFCActionDialogFragment dialog;
     private ProductComponent productComponent;
 
@@ -55,6 +69,8 @@ public class BarcodeReaderActivity extends BaseActivity implements HasComponent<
     @Bind(R.id.scan_options)
     ExpandableSelector scanOptionSelector;
 
+    BroadcastReceiver mRegistrationBroadcastReceiver;
+
 
     @Override
     public ProductComponent getComponent() {
@@ -66,6 +82,8 @@ public class BarcodeReaderActivity extends BaseActivity implements HasComponent<
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_barcode_reader);
         ButterKnife.bind(this);
+
+
 
         setSupportActionBar(toolbar);
 
@@ -80,6 +98,8 @@ public class BarcodeReaderActivity extends BaseActivity implements HasComponent<
             setupDrawerContent(navigationView);
         }
 
+
+
         Picasso.with(this).load("http://lorempixel.com/200/200/food/8").transform(new CircleTransform()).into(avatar);
 
         getApplicationComponent().inject(this);
@@ -89,7 +109,7 @@ public class BarcodeReaderActivity extends BaseActivity implements HasComponent<
         productComponent.inject(this);
 
         //Establecer el PageAdapter del componente ViewPager
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+        final ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.setAdapter(new MenuFragmentPageAdapter(
                 getSupportFragmentManager()));
 
@@ -98,8 +118,118 @@ public class BarcodeReaderActivity extends BaseActivity implements HasComponent<
         tabLayout.setupWithViewPager(viewPager);
 
 
+        installMenuListeners(navigationView, viewPager);
+
         initializeScanOptionsExpandableSelector();
 
+
+
+        /************************ GCM    *****************************/
+        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                SharedPreferences sharedPreferences =
+                        PreferenceManager.getDefaultSharedPreferences(context);
+                boolean sentToken = sharedPreferences
+                        .getBoolean(BenMeSabePreferences.SENT_TOKEN_TO_SERVER, false);
+                if (sentToken) {
+                    Toast.makeText(BarcodeReaderActivity.this,"Token enviado",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(BarcodeReaderActivity.this,"Token error",Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
+
+        if (checkPlayServices()) {
+            // Start IntentService to register this application with GCM.
+            Intent intent = new Intent(this, RegistrationIntentService.class);
+            startService(intent);
+        }
+        /************************ GCM    *****************************/
+    }
+
+    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+    /**
+     * Check the device to make sure it has the Google Play Services APK. If
+     * it doesn't, display a dialog that allows users to download the APK from
+     * the Google Play Store or enable it in the device's system settings.
+     */
+    private boolean checkPlayServices() {
+        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
+        int resultCode = apiAvailability.isGooglePlayServicesAvailable(this);
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (apiAvailability.isUserResolvableError(resultCode)) {
+                apiAvailability.getErrorDialog(this, resultCode, PLAY_SERVICES_RESOLUTION_REQUEST)
+                        .show();
+            } else {
+                Log.i(TAG, "This device is not supported.");
+                finish();
+            }
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                new IntentFilter(BenMeSabePreferences.REGISTRATION_COMPLETE));
+    }
+
+    @Override
+    protected void onPause() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
+        super.onPause();
+    }
+
+
+    private void installMenuListeners(NavigationView navigationView, final ViewPager viewPager) {
+        MenuItem navOrder = navigationView.getMenu().findItem(R.id.nav_order);
+        navOrder.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                viewPager.setCurrentItem(2);
+                return false;
+            }
+        });
+
+        MenuItem navSuggestion = navigationView.getMenu().findItem(R.id.nav_suggestion);
+        navSuggestion.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                viewPager.setCurrentItem(0);
+                return false;
+            }
+        });
+
+        MenuItem navScanNFC = navigationView.getMenu().findItem(R.id.nav_scan_nfc);
+        navScanNFC.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                scanNFC();
+                return false;
+            }
+        });
+
+        MenuItem navScanQR = navigationView.getMenu().findItem(R.id.nav_scan_qr);
+        navScanQR.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                scanQR();
+                return false;
+            }
+        });
+
+        MenuItem navScanIntro = navigationView.getMenu().findItem(R.id.nav_intro);
+        navScanIntro.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                Intent toIntro = new Intent(BarcodeReaderActivity.this, BenMeSabeIntro.class);
+                startActivity(toIntro);
+                return false;
+            }
+        });
     }
 
     private void initializeInjector() {
@@ -257,16 +387,6 @@ public class BarcodeReaderActivity extends BaseActivity implements HasComponent<
                 scanOptionSelector.updateExpandableItem(position, firstItem);
             }
         });
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
     }
 
     @Override

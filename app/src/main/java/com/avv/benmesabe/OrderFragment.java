@@ -3,16 +3,19 @@ package com.avv.benmesabe;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.avv.benmesabe.domain.Product;
 import com.avv.benmesabe.domain.order.OrderManager;
-import com.avv.benmesabe.presentation.adapter.ProductAdapter;
+import com.avv.benmesabe.presentation.adapter.UltimateProductAdapter;
 import com.avv.benmesabe.presentation.view.OrderListView;
+import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
+import com.marshalchen.ultimaterecyclerview.animators.SlideInLeftAnimator;
+import com.marshalchen.ultimaterecyclerview.itemTouchHelper.SimpleItemTouchHelperCallback;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -27,10 +30,17 @@ public class OrderFragment extends Fragment implements OrderListView {
 
     public static final String NAME = "OrderFragment";
 
-    @Bind(R.id.rvOrderProducts)
-    RecyclerView rvOrderProducts;
+    //@Bind(R.id.rvOrderProducts)
+    //RecyclerView rvOrderProducts;
 
-    private ProductAdapter productsAdapter;
+    @Bind(R.id.rvOrderProducts)
+    UltimateRecyclerView rvOrderProducts;
+
+
+
+    //private ProductAdapter productsAdapter;
+
+    private UltimateProductAdapter productsAdapter;
 
     public static OrderFragment newInstance() {
         OrderFragment fragment = new OrderFragment();
@@ -58,10 +68,25 @@ public class OrderFragment extends Fragment implements OrderListView {
     }
 
     private void setupUI() {
-        rvOrderProducts.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        this.productsAdapter = new ProductAdapter(getActivity(), new ArrayList<Product>());
+        //rvOrderProducts.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        //this.productsAdapter = new ProductAdapter(getActivity(), new ArrayList<Product>());
         //this.productsAdapter.setOnProductItemClickListener(this);
+        //this.rvOrderProducts.setAdapter(productsAdapter);
+
+
+        rvOrderProducts.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
+        this.productsAdapter = new UltimateProductAdapter(getActivity(), new ArrayList<Product>());
+        //StickyRecyclerHeadersDecoration headersDecor = new StickyRecyclerHeadersDecoration(productsAdapter);
+        //rvOrderProducts.addItemDecoration(headersDecor);
         this.rvOrderProducts.setAdapter(productsAdapter);
+
+        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(productsAdapter);
+        ItemTouchHelper mItemTouchHelper = new ItemTouchHelper(callback);
+        mItemTouchHelper.attachToRecyclerView(rvOrderProducts.mRecyclerView);
+
+        rvOrderProducts.setItemAnimator(new SlideInLeftAnimator());
+        rvOrderProducts.getItemAnimator().setAddDuration(400);
+        rvOrderProducts.getItemAnimator().setRemoveDuration(400);
     }
 
 
