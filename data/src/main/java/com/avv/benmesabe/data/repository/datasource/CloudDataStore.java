@@ -3,6 +3,7 @@ package com.avv.benmesabe.data.repository.datasource;
 import com.avv.benmesabe.data.entity.AllergenEntity;
 import com.avv.benmesabe.data.entity.IngredientEntity;
 import com.avv.benmesabe.data.entity.ProductEntity;
+import com.avv.benmesabe.domain.Order;
 
 import java.util.List;
 
@@ -10,7 +11,9 @@ import retrofit.Call;
 import retrofit.GsonConverterFactory;
 import retrofit.Response;
 import retrofit.Retrofit;
+import retrofit.http.Body;
 import retrofit.http.GET;
+import retrofit.http.POST;
 import retrofit.http.Path;
 import rx.Observable;
 import rx.Subscriber;
@@ -45,6 +48,28 @@ public class CloudDataStore implements BenMeSabeDataStore {
 
         @GET("/RestMenus/product/{productId}/allergen")
         Call<List<AllergenEntity>> listProductAllergens(@Path("productId") Number productId);
+
+        @POST("/RestMenus/order")
+        Call<Order> postOrder(@Body Order order);
+    }
+
+    public Observable<Order> postOrder(final Order order){
+        return Observable.create(new Observable.OnSubscribe<Order>() {
+            @Override
+            public void call(Subscriber<? super Order> subscriber) {
+                try{
+                    Call<Order> orderCall = benMeSabeService.postOrder(order);
+                    Response<Order> orderResponse = orderCall.execute();
+                    subscriber.onNext(orderResponse.body());
+                    subscriber.onCompleted();
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                    subscriber.onError(new Exception(e.getMessage()));
+                }
+            }
+        });
+
     }
 
     public Observable<List<ProductEntity>> productEntityList(){
