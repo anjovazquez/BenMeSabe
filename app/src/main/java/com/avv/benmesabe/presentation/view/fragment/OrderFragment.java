@@ -1,4 +1,4 @@
-package com.avv.benmesabe;
+package com.avv.benmesabe.presentation.view.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -9,10 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.avv.benmesabe.R;
 import com.avv.benmesabe.domain.Product;
 import com.avv.benmesabe.domain.order.OrderManager;
 import com.avv.benmesabe.presentation.adapter.UltimateProductAdapter;
 import com.avv.benmesabe.presentation.view.OrderListView;
+import com.avv.benmesabe.presentation.view.activity.BarcodeReaderActivity;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 import com.marshalchen.ultimaterecyclerview.animators.SlideInLeftAnimator;
 import com.marshalchen.ultimaterecyclerview.itemTouchHelper.SimpleItemTouchHelperCallback;

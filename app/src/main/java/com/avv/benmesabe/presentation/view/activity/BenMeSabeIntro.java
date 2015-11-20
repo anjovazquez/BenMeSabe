@@ -1,10 +1,9 @@
-package com.avv.benmesabe.presentation.activity;
+package com.avv.benmesabe.presentation.view.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 
-import com.avv.benmesabe.BarcodeReaderActivity;
 import com.avv.benmesabe.R;
 import com.github.paolorotolo.appintro.AppIntro;
 import com.github.paolorotolo.appintro.AppIntroFragment;

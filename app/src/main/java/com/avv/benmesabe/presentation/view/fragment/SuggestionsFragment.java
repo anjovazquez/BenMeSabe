@@ -1,27 +1,29 @@
-package com.avv.benmesabe;
+package com.avv.benmesabe.presentation.view.fragment;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.avv.benmesabe.R;
 import com.avv.benmesabe.domain.Product;
 import com.avv.benmesabe.presentation.adapter.ProductAdapter;
-import com.avv.benmesabe.presentation.adapter.ProductSectionAdapter;
 import com.avv.benmesabe.presentation.internal.di.HasComponent;
 import com.avv.benmesabe.presentation.internal.di.components.ProductComponent;
 import com.avv.benmesabe.presentation.presenter.ProductListPresenter;
 import com.avv.benmesabe.presentation.view.ProductListView;
+import com.avv.benmesabe.presentation.view.activity.BarcodeReaderActivity;
+import com.avv.benmesabe.presentation.view.activity.DetailActivity;
 import com.marshalchen.ultimaterecyclerview.ui.DividerItemDecoration;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -51,8 +53,8 @@ public class SuggestionsFragment extends Fragment implements ProductListView, Pr
     private void setupUI() {
 
         rv_products.setHasFixedSize(true);
-        //rv_products.setLayoutManager(new GridLayoutManager(getActivity(), 2, LinearLayoutManager.VERTICAL, false));
-        rv_products.setLayoutManager(new LinearLayoutManager(getActivity()));
+        rv_products.setLayoutManager(new GridLayoutManager(getActivity(), 2, LinearLayoutManager.VERTICAL, false));
+        //rv_products.setLayoutManager(new LinearLayoutManager(getActivity()));
         rv_products.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
 
 
@@ -105,25 +107,25 @@ public class SuggestionsFragment extends Fragment implements ProductListView, Pr
         if (productModelCollection != null) {
 
             //This is the code to provide a sectioned list
-            List<ProductSectionAdapter.Section> sections =
-                    new ArrayList<ProductSectionAdapter.Section>();
+            //List<ProductSectionAdapter.Section> sections =
+              //      new ArrayList<ProductSectionAdapter.Section>();
 
             //Sections
-            sections.add(new ProductSectionAdapter.Section(0, "Section 1"));
-            sections.add(new ProductSectionAdapter.Section(5, "Section 2"));
-            sections.add(new ProductSectionAdapter.Section(12, "Section 3"));
+            //sections.add(new ProductSectionAdapter.Section(0, "Section 1"));
+            //sections.add(new ProductSectionAdapter.Section(5, "Section 2"));
+            //sections.add(new ProductSectionAdapter.Section(12, "Section 3"));
             //sections.add(new ProductSectionAdapter.Section(14, "Section 4"));
             //sections.add(new ProductSectionAdapter.Section(20, "Section 5"));
 
             this.productsAdapter.setProductsCollection(productModelCollection);
 
-            ProductSectionAdapter.Section[] dummy = new ProductSectionAdapter.Section[sections.size()];
+            /*ProductSectionAdapter.Section[] dummy = new ProductSectionAdapter.Section[sections.size()];
             ProductSectionAdapter mSectionedAdapter = new
                     ProductSectionAdapter(getActivity(), R.layout.section, R.id.section_text, productsAdapter);
-            mSectionedAdapter.setSections(sections.toArray(dummy));
+            mSectionedAdapter.setSections(sections.toArray(dummy));*/
 
             //Apply this adapter to the RecyclerView
-            rv_products.setAdapter(mSectionedAdapter);
+            rv_products.setAdapter(productsAdapter);
 
 
         }

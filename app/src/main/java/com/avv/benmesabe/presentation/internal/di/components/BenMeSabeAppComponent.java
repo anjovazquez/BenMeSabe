@@ -5,7 +5,7 @@ import android.content.Context;
 import com.avv.benmesabe.domain.executor.PostExecutionThread;
 import com.avv.benmesabe.domain.executor.ThreadExecutor;
 import com.avv.benmesabe.domain.repository.BenMeSabeRepository;
-import com.avv.benmesabe.presentation.activity.BaseActivity;
+import com.avv.benmesabe.presentation.view.activity.BaseActivity;
 import com.avv.benmesabe.presentation.internal.di.modules.ApplicationModule;
 
 import javax.inject.Singleton;

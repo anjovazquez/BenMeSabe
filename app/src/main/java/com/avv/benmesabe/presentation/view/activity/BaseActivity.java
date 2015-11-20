@@ -1,4 +1,4 @@
-package com.avv.benmesabe.presentation.activity;
+package com.avv.benmesabe.presentation.view.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

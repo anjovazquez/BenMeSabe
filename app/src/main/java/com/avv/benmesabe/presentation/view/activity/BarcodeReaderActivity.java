@@ -1,4 +1,4 @@
-package com.avv.benmesabe;
+package com.avv.benmesabe.presentation.view.activity;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -25,15 +25,17 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.avv.benmesabe.R;
 import com.avv.benmesabe.domain.order.OrderManager;
 import com.avv.benmesabe.picasso.CircleTransform;
-import com.avv.benmesabe.presentation.activity.BaseActivity;
-import com.avv.benmesabe.presentation.activity.BenMeSabeIntro;
 import com.avv.benmesabe.presentation.gcm.service.BenMeSabePreferences;
 import com.avv.benmesabe.presentation.gcm.service.RegistrationIntentService;
 import com.avv.benmesabe.presentation.internal.di.HasComponent;
 import com.avv.benmesabe.presentation.internal.di.components.DaggerProductComponent;
 import com.avv.benmesabe.presentation.internal.di.components.ProductComponent;
+import com.avv.benmesabe.presentation.view.dialog.NFCActionDialogFragment;
+import com.avv.benmesabe.presentation.view.fragment.MenuFragmentPageAdapter;
+import com.avv.benmesabe.presentation.view.fragment.OrderFragment;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.zxing.integration.android.IntentIntegrator;

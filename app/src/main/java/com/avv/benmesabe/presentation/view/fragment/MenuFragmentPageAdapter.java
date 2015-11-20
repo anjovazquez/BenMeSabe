@@ -1,8 +1,12 @@
-package com.avv.benmesabe;
+package com.avv.benmesabe.presentation.view.fragment;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+
+import com.avv.benmesabe.presentation.view.fragment.MenuFragment;
+import com.avv.benmesabe.presentation.view.fragment.OrderFragment;
+import com.avv.benmesabe.presentation.view.fragment.SuggestionsFragment;
 
 /**
  * Created by angelvazquez on 2/11/15.

@@ -1,4 +1,4 @@
-package com.avv.benmesabe;
+package com.avv.benmesabe.presentation.view.dialog;
 
 import android.app.Dialog;
 import android.os.Bundle;
@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.avv.benmesabe.R;
 
 /**
  * Created by angel on 30/07/2015.

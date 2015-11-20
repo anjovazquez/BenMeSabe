@@ -22,7 +22,7 @@
         android:label="@string/app_name"
         android:theme="@style/Theme.DesignDemo">
         <activity
-            android:name=".presentation.activity.BenMeSabeSplash"
+            android:name=".presentation.view.activity.BenMeSabeSplash"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,7 +31,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".BarcodeReaderActivity"
+            android:name=".presentation.view.activity.BarcodeReaderActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask" >
 
@@ -48,13 +48,13 @@
             -->
         </activity>
         <activity
-            android:name=".DetailActivity"
-            android:parentActivityName=".BarcodeReaderActivity" >
+            android:name=".presentation.view.activity.DetailActivity"
+            android:parentActivityName=".presentation.view.activity.BarcodeReaderActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".BarcodeReaderActivity" />
+                android:value=".presentation.view.activity.BarcodeReaderActivity" />
         </activity>
-        <activity android:name=".presentation.activity.BenMeSabeIntro" >
+        <activity android:name=".presentation.view.activity.BenMeSabeIntro" >
         </activity>
 
         <receiver

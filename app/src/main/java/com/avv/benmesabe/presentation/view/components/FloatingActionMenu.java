@@ -1,4 +1,4 @@
-package com.avv.benmesabe;
+package com.avv.benmesabe.presentation.view.components;
 
 import android.animation.Animator;
 import android.animation.AnimatorSet;

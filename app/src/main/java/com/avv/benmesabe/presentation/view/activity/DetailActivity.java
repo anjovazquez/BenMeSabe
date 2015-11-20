@@ -1,4 +1,4 @@
-package com.avv.benmesabe;
+package com.avv.benmesabe.presentation.view.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,11 +12,12 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.avv.benmesabe.R;
 import com.avv.benmesabe.domain.Allergen;
 import com.avv.benmesabe.domain.Ingredient;
 import com.avv.benmesabe.domain.Product;
 import com.avv.benmesabe.domain.order.OrderManager;
-import com.avv.benmesabe.presentation.activity.BaseActivity;
+import com.avv.benmesabe.presentation.view.activity.BaseActivity;
 import com.avv.benmesabe.presentation.adapter.IngredientAdapter;
 import com.avv.benmesabe.presentation.internal.di.HasComponent;
 import com.avv.benmesabe.presentation.internal.di.components.DaggerProductComponent;

@@ -1,10 +1,12 @@
-package com.avv.benmesabe;
+package com.avv.benmesabe.presentation.view.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.avv.benmesabe.R;
 
 /**
  * Created by angelvazquez on 3/11/15.

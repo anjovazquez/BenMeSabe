@@ -1,8 +1,7 @@
-package com.avv.benmesabe.presentation.activity;
+package com.avv.benmesabe.presentation.view.activity;
 
 import android.content.Intent;
 
-import com.avv.benmesabe.BarcodeReaderActivity;
 import com.avv.benmesabe.R;
 import com.daimajia.androidanimations.library.Techniques;
 import com.viksaa.sssplash.lib.activity.AwesomeSplash;
