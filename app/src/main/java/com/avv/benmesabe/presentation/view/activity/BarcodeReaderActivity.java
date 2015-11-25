@@ -26,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.avv.benmesabe.R;
+import com.avv.benmesabe.domain.Order;
 import com.avv.benmesabe.domain.order.OrderManager;
 import com.avv.benmesabe.picasso.CircleTransform;
 import com.avv.benmesabe.presentation.gcm.service.BenMeSabePreferences;
@@ -33,6 +34,9 @@ import com.avv.benmesabe.presentation.gcm.service.RegistrationIntentService;
 import com.avv.benmesabe.presentation.internal.di.HasComponent;
 import com.avv.benmesabe.presentation.internal.di.components.DaggerProductComponent;
 import com.avv.benmesabe.presentation.internal.di.components.ProductComponent;
+import com.avv.benmesabe.presentation.internal.di.modules.ProductModule;
+import com.avv.benmesabe.presentation.presenter.MainMenuPresenter;
+import com.avv.benmesabe.presentation.view.MainMenuView;
 import com.avv.benmesabe.presentation.view.dialog.NFCActionDialogFragment;
 import com.avv.benmesabe.presentation.view.fragment.MenuFragmentPageAdapter;
 import com.avv.benmesabe.presentation.view.fragment.OrderFragment;
@@ -48,16 +52,21 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 
-public class BarcodeReaderActivity extends BaseActivity implements HasComponent<ProductComponent> {
+public class BarcodeReaderActivity extends BaseActivity implements HasComponent<ProductComponent>, MainMenuView {
 
     private static final String TAG = "BarcodeReaderActivity";
 
     private NFCActionDialogFragment dialog;
     private ProductComponent productComponent;
+
+
+    private Order order;
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
@@ -71,8 +80,18 @@ public class BarcodeReaderActivity extends BaseActivity implements HasComponent<
     @Bind(R.id.scan_options)
     ExpandableSelector scanOptionSelector;
 
+    @Inject
+    MainMenuPresenter mainMenuPresenter;
+
     BroadcastReceiver mRegistrationBroadcastReceiver;
 
+    public ExpandableSelector getScanOptionSelector() {
+        return scanOptionSelector;
+    }
+
+    public Toolbar getToolbar() {
+        return toolbar;
+    }
 
     @Override
     public ProductComponent getComponent() {
@@ -84,8 +103,6 @@ public class BarcodeReaderActivity extends BaseActivity implements HasComponent<
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_barcode_reader);
         ButterKnife.bind(this);
-
-
 
         setSupportActionBar(toolbar);
 
@@ -100,15 +117,13 @@ public class BarcodeReaderActivity extends BaseActivity implements HasComponent<
             setupDrawerContent(navigationView);
         }
 
-
-
-        Picasso.with(this).load("http://lorempixel.com/200/200/food/8").transform(new CircleTransform()).into(avatar);
+        Picasso.with(this).load(R.drawable.icon_white).transform(new CircleTransform()).into(avatar);
 
         getApplicationComponent().inject(this);
-
         this.initializeInjector();
-
         productComponent.inject(this);
+
+        mainMenuPresenter.setView(this);
 
         //Establecer el PageAdapter del componente ViewPager
         final ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -235,9 +250,11 @@ public class BarcodeReaderActivity extends BaseActivity implements HasComponent<
     }
 
     private void initializeInjector() {
+        ProductModule productModule = new ProductModule();
+        productModule.setOrder(order);
         this.productComponent = DaggerProductComponent.builder()
                 .benMeSabeAppComponent(getApplicationComponent())
-                .activityModule(getActivityModule())
+                .activityModule(getActivityModule()).productModule(productModule)
                 .build();
     }
 
@@ -255,8 +272,12 @@ public class BarcodeReaderActivity extends BaseActivity implements HasComponent<
     }
 
     public void scanNFC(){
-        this.dialog = new NFCActionDialogFragment("Read NFC",
-                "Cancelar");
+        this.dialog = new NFCActionDialogFragment();
+
+        Bundle args = new Bundle();
+        args.putString("text", "Read NFC");
+        args.putString("textButton", "Cancelar");
+        dialog.setArguments(args);
         this.dialog.show(getSupportFragmentManager(), "nfc_writer");
     }
     public void scanQR() {
@@ -433,5 +454,40 @@ public class BarcodeReaderActivity extends BaseActivity implements HasComponent<
                 scanOptionSelector.collapse();
             }
         });
+    }
+
+    @Override
+    public void showOrderInView(Order order) {
+
+    }
+
+    @Override
+    public void showLoading() {
+
+    }
+
+    @Override
+    public void hideLoading() {
+
+    }
+
+    @Override
+    public void showRetry() {
+
+    }
+
+    @Override
+    public void hideRetry() {
+
+    }
+
+    @Override
+    public void showError(String message) {
+
+    }
+
+    @Override
+    public Context getContext() {
+        return this;
     }
 }

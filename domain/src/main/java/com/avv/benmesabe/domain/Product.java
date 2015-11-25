@@ -9,6 +9,8 @@ public class Product {
     private String productName;
     private String description;
     private String imageURL;
+    private String productSection;
+    private Number productPrice;
 
     public Number getProductId() {
         return productId;
@@ -40,5 +42,21 @@ public class Product {
 
     public void setImageURL(String imageURL) {
         this.imageURL = imageURL;
+    }
+
+    public String getProductSection() {
+        return productSection;
+    }
+
+    public void setProductSection(String productSection) {
+        this.productSection = productSection;
+    }
+
+    public Number getProductPrice() {
+        return productPrice;
+    }
+
+    public void setProductPrice(Number productPrice) {
+        this.productPrice = productPrice;
     }
 }

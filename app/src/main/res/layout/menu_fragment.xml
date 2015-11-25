@@ -4,7 +4,7 @@
     android:layout_height="match_parent">
 
 
-    <com.avv.benmesabe.presentation.view.components.StepPagerStrip
+    <!--<com.avv.benmesabe.presentation.view.components.StepPagerStrip
         android:id="@+id/strip"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -14,7 +14,7 @@
         android:paddingBottom="8dp"
         android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
         android:paddingRight="?android:attr/listPreferredItemPaddingRight"
-        android:gravity="left" />
+        android:gravity="left" />-->
 
     <com.marshalchen.ultimaterecyclerview.UltimateRecyclerView
         android:layout_width="match_parent"

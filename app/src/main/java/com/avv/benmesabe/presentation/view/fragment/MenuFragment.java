@@ -1,7 +1,9 @@
 package com.avv.benmesabe.presentation.view.fragment;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,14 +14,14 @@ import android.view.ViewGroup;
 
 import com.avv.benmesabe.R;
 import com.avv.benmesabe.domain.Product;
-import com.avv.benmesabe.presentation.adapter.ProductAdapter;
+import com.avv.benmesabe.presentation.adapter.CategoryProductAdapter;
 import com.avv.benmesabe.presentation.adapter.UltimateProductAdapter;
 import com.avv.benmesabe.presentation.internal.di.HasComponent;
 import com.avv.benmesabe.presentation.internal.di.components.ProductComponent;
 import com.avv.benmesabe.presentation.presenter.ProductMenuListPresenter;
 import com.avv.benmesabe.presentation.view.ProductListView;
 import com.avv.benmesabe.presentation.view.activity.BarcodeReaderActivity;
-import com.avv.benmesabe.presentation.view.components.StepPagerStrip;
+import com.avv.benmesabe.presentation.view.activity.DetailActivity;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 import com.marshalchen.ultimaterecyclerview.itemTouchHelper.SimpleItemTouchHelperCallback;
 import com.marshalchen.ultimaterecyclerview.ui.DividerItemDecoration;
@@ -35,7 +37,7 @@ import butterknife.ButterKnife;
 /**
  * Created by angelvazquez on 2/11/15.
  */
-public class MenuFragment extends Fragment implements ProductListView, ProductAdapter.OnProductItemClickListener {
+public class MenuFragment extends Fragment implements ProductListView, CategoryProductAdapter.OnProductItemClickListener {
 
     public static final String NAME = "MenuFragment";
 
@@ -52,7 +54,7 @@ public class MenuFragment extends Fragment implements ProductListView, ProductAd
         return componentType.cast(((HasComponent<C>) getActivity()).getComponent());
     }
 
-    private StepPagerStrip mStepPagerStrip;
+    //private StepPagerStrip mStepPagerStrip;
 
     public static MenuFragment newInstance() {
         MenuFragment fragment = new MenuFragment();
@@ -88,9 +90,9 @@ public class MenuFragment extends Fragment implements ProductListView, ProductAd
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.menu_fragment, container, false);
-        mStepPagerStrip = (StepPagerStrip) view.findViewById(R.id.strip);
+        /*mStepPagerStrip = (StepPagerStrip) view.findViewById(R.id.strip);
         mStepPagerStrip.setPageCount(4);
-        mStepPagerStrip.setCurrentPage(2);
+        mStepPagerStrip.setCurrentPage(2);*/
 
         ButterKnife.bind(this, view);
 
@@ -122,24 +124,22 @@ public class MenuFragment extends Fragment implements ProductListView, ProductAd
     }
 
 
-    private ExpCustomAdapter simpleRecyclerViewAdapter = null;
+    private CategoryProductAdapter simpleRecyclerViewAdapter = null;
 
     @Override
     public void renderProductList(Collection<Product> productModelCollection) {
         this.productsAdapter.setProductsCollection(productModelCollection);
         rv_products_menu.setAdapter(productsAdapter);
 
+        simpleRecyclerViewAdapter = new CategoryProductAdapter(getActivity());
+        simpleRecyclerViewAdapter.setProductsCollection(productModelCollection);
+        this.simpleRecyclerViewAdapter.setOnProductItemClickListener(this);
 
-
-        simpleRecyclerViewAdapter = new CategoryProductAdapter(this);
-        simpleRecyclerViewAdapter.addAll(ExpCustomAdapter.getPreCodeMenu(sampledatagroup1, sampledatagroup2, sampledatagroup3), 0);
-
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         rv_products_menu.setLayoutManager(linearLayoutManager);
         rv_products_menu.setAdapter(simpleRecyclerViewAdapter);
         rv_products_menu.setRecylerViewBackgroundColor(Color.parseColor("#ffffff"));
         addExpandableFeatures();
-
     }
 
     private void addExpandableFeatures() {
@@ -176,6 +176,12 @@ public class MenuFragment extends Fragment implements ProductListView, ProductAd
 
     @Override
     public void onProductItemClicked(Product product) {
+        Intent intentDetail = new Intent(getActivity(), DetailActivity.class);
+        intentDetail.putExtra(DetailActivity.EXTRA_PRODUCT_ID, product.getProductId());
+        intentDetail.putExtra(DetailActivity.EXTRA_PRODUCT_NAME, product.getProductName());
+        intentDetail.putExtra(DetailActivity.EXTRA_PRODUCT_IMAGEURL, product.getImageURL());
+        intentDetail.putExtra(DetailActivity.EXTRA_PRODUCT_DESC, product.getDescription());
 
+        getActivity().startActivity(intentDetail, ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity()).toBundle());
     }
 }

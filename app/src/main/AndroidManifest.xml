@@ -94,8 +94,6 @@
             android:exported="false">
         </service>
 
-        <activity android:name="com.github.mmin18.layoutcast.ResetActivity" />
-
         <service
             android:name=".presentation.gcm.service.RegistrationIntentService"
             android:exported="false" >

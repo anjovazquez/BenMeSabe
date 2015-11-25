@@ -3,6 +3,7 @@ package com.avv.benmesabe.data.repository.datasource;
 import com.avv.benmesabe.data.entity.AllergenEntity;
 import com.avv.benmesabe.data.entity.IngredientEntity;
 import com.avv.benmesabe.data.entity.ProductEntity;
+import com.avv.benmesabe.domain.CustomerRequest;
 import com.avv.benmesabe.domain.Order;
 
 import java.util.List;
@@ -30,7 +31,6 @@ public class CloudDataStore implements BenMeSabeDataStore {
         retrofit = new Retrofit.Builder().
                 baseUrl("http://52.26.71.31:8080/")
                 .addConverterFactory(GsonConverterFactory.create())
-                //.addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();
 
         benMeSabeService = retrofit.create(BenMeSabeService.class);
@@ -51,6 +51,9 @@ public class CloudDataStore implements BenMeSabeDataStore {
 
         @POST("/RestMenus/order")
         Call<Order> postOrder(@Body Order order);
+
+        @POST("/RestMenus/order")
+        Call<CustomerRequest> postCustomerRequest(@Body CustomerRequest order);
     }
 
     public Observable<Order> postOrder(final Order order){
@@ -72,6 +75,25 @@ public class CloudDataStore implements BenMeSabeDataStore {
 
     }
 
+    public Observable<CustomerRequest> postCustomerRequest(final CustomerRequest customerRequest){
+        return Observable.create(new Observable.OnSubscribe<CustomerRequest>() {
+            @Override
+            public void call(Subscriber<? super CustomerRequest> subscriber) {
+                try{
+                    Call<CustomerRequest> customerRequestCall = benMeSabeService.postCustomerRequest(customerRequest);
+                    Response<CustomerRequest> customerResponse = customerRequestCall.execute();
+                    subscriber.onNext(customerResponse.body());
+                    subscriber.onCompleted();
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                    subscriber.onError(new Exception(e.getMessage()));
+                }
+            }
+        });
+
+    }
+
     public Observable<List<ProductEntity>> productEntityList(){
         return Observable.create(new Observable.OnSubscribe<List<ProductEntity>>(){
             @Override
@@ -80,7 +102,7 @@ public class CloudDataStore implements BenMeSabeDataStore {
                 try{
                     Call<List<ProductEntity>> productsCall = benMeSabeService.listProduct();
                     Response<List<ProductEntity>> productsResponse = productsCall.execute();
-                    subscriber.onNext(productsResponse.body());
+                       subscriber.onNext(productsResponse.body());
                     subscriber.onCompleted();
                 }
                 catch (Exception e){

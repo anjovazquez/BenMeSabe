@@ -30,7 +30,7 @@ public class OrderManager {
     }
 
     public void setOrderName(String orderName){
-        currentOrder.setName(orderName);
+        currentOrder.setOrderName(orderName);
     }
 
     public void addProduct(Product product){

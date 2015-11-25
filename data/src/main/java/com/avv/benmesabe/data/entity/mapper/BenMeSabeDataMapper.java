@@ -30,6 +30,8 @@ public class BenMeSabeDataMapper {
             product.setDescription(productEntity.getDescription());
             product.setImageURL(productEntity.getImageURL());
             product.setProductName(productEntity.getProductName());
+            product.setProductSection(productEntity.getProductSection());
+            product.setProductPrice(productEntity.getProductPrice());
         }
         return product;
     }

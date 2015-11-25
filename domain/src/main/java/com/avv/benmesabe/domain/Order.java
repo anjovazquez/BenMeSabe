@@ -9,7 +9,7 @@ import java.util.List;
 public class Order {
 
     private String tableNo;
-    private String name;
+    private String orderName;
     private List<Product> productList;
 
     public void addProduct(Product product){
@@ -31,12 +31,12 @@ public class Order {
         this.tableNo = tableNo;
     }
 
-    public String getName() {
-        return name;
+    public String getOrderName() {
+        return orderName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setOrderName(String orderName) {
+        this.orderName = orderName;
     }
 
     public List<Product> getProductList() {

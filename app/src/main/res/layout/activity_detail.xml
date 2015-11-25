@@ -65,10 +65,11 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/gray"
+                        android:background="@color/primary"
                         android:text="Alergenos"
                         android:textStyle="bold"
                         android:textSize="16sp"
+                        android:textColor="@color/white"
                         android:padding="8dp"/>
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -149,10 +150,11 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/gray"
+                android:background="@color/primary"
                 android:text="Ingredientes"
                 android:textStyle="bold"
                 android:textSize="16sp"
+                android:textColor="@color/white"
                 android:padding="8dp"/>
 
             <android.support.v7.widget.RecyclerView
@@ -266,6 +268,8 @@
         app:layout_anchorGravity="bottom|right|end"
         android:src="@drawable/ic_add_black"
         android:layout_margin="@dimen/fab_margin"
-        android:clickable="true"/>
+        android:clickable="true"
+        app:backgroundTint="@color/primary"
+        android:tint="@color/white"/>
 
 </android.support.design.widget.CoordinatorLayout>

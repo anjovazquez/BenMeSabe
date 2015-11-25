@@ -17,31 +17,51 @@ import com.avv.benmesabe.R;
 public class NFCActionDialogFragment extends DialogFragment {
 
     private TextView textView;
-    private final String text;
     private Button bButton;
-    private final String textButton;
+
+    private String text;
+    private String textButton;
 
     public interface OnNFCDetected {
         void nfcDetected(int size);
     }
 
-    public NFCActionDialogFragment(String text, String textButton) {
-        this.text = text;
-        this.textButton = textButton;
+    public NFCActionDialogFragment(){
+        text = "";
+        textButton = "";
+    }
+
+    public static NFCActionDialogFragment newInstance(String text, String textButton) {
+
+        Bundle args = new Bundle();
+
+        NFCActionDialogFragment fragment = new NFCActionDialogFragment();
+        args.putString("text", text);
+        args.putString("textButton", textButton);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        text = getArguments().getString("text");
+        textButton = getArguments().getString("textButton");
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         this.getDialog().setTitle("Acción NFC");
+
         View view = inflater.inflate(R.layout.nfc_write_dialog, container,
                 false);
 
         this.textView = (TextView) view.findViewById(R.id.textInfo);
-        this.textView.setText(this.text);
+        this.textView.setText(text);
 
         this.bButton = (Button) view.findViewById(R.id.bCancel);
-        this.bButton.setText(this.textButton);
+        this.bButton.setText(textButton);
         this.bButton.setOnClickListener(new View.OnClickListener() {
 
             @Override

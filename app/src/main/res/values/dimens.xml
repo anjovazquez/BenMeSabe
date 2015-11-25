@@ -44,4 +44,11 @@
     <dimen name="step_pager_tab_height">3dp</dimen>
     <dimen name="step_pager_tab_spacing">4dp</dimen>
 
+
+    <dimen name="sectionSize">20dp</dimen>
+    <dimen name="sectionNotificationSize">20dp</dimen>
+    <dimen name="sectionSquareIconSize">40dp</dimen>
+    <dimen name="sectionRowMarginHorizontal">20dp</dimen>
+    <dimen name="sectionNormalHeight">40dp</dimen>
+
 </resources>

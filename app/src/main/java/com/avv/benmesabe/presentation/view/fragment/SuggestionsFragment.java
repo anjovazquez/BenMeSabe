@@ -6,20 +6,20 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.avv.benmesabe.R;
 import com.avv.benmesabe.domain.Product;
-import com.avv.benmesabe.presentation.adapter.ProductAdapter;
+import com.avv.benmesabe.presentation.adapter.UltimateProductAdapter;
 import com.avv.benmesabe.presentation.internal.di.HasComponent;
 import com.avv.benmesabe.presentation.internal.di.components.ProductComponent;
 import com.avv.benmesabe.presentation.presenter.ProductListPresenter;
 import com.avv.benmesabe.presentation.view.ProductListView;
 import com.avv.benmesabe.presentation.view.activity.BarcodeReaderActivity;
 import com.avv.benmesabe.presentation.view.activity.DetailActivity;
+import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 import com.marshalchen.ultimaterecyclerview.ui.DividerItemDecoration;
 
 import java.util.ArrayList;
@@ -33,17 +33,17 @@ import butterknife.ButterKnife;
 /**
  * Created by angelvazquez on 2/11/15.
  */
-public class SuggestionsFragment extends Fragment implements ProductListView, ProductAdapter.OnProductItemClickListener {
+public class SuggestionsFragment extends Fragment implements ProductListView, UltimateProductAdapter.OnProductItemClickListener {
 
     public static final String NAME = "SuggestionsFragment";
 
     @Bind(R.id.rv_products)
-    RecyclerView rv_products;
+    UltimateRecyclerView rv_products;
 
     @Inject
     ProductListPresenter productListPresenter;
 
-    private ProductAdapter productsAdapter;
+    private UltimateProductAdapter productsAdapter;
 
     @SuppressWarnings("unchecked")
     protected <C> C getComponent(Class<C> componentType) {
@@ -57,8 +57,7 @@ public class SuggestionsFragment extends Fragment implements ProductListView, Pr
         //rv_products.setLayoutManager(new LinearLayoutManager(getActivity()));
         rv_products.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
 
-
-        this.productsAdapter = new ProductAdapter(getActivity(), new ArrayList<Product>());
+        this.productsAdapter = new UltimateProductAdapter(getActivity(), new ArrayList<Product>());
         this.productsAdapter.setOnProductItemClickListener(this);
         this.rv_products.setAdapter(productsAdapter);
     }
@@ -105,29 +104,8 @@ public class SuggestionsFragment extends Fragment implements ProductListView, Pr
     @Override
     public void renderProductList(Collection<Product> productModelCollection) {
         if (productModelCollection != null) {
-
-            //This is the code to provide a sectioned list
-            //List<ProductSectionAdapter.Section> sections =
-              //      new ArrayList<ProductSectionAdapter.Section>();
-
-            //Sections
-            //sections.add(new ProductSectionAdapter.Section(0, "Section 1"));
-            //sections.add(new ProductSectionAdapter.Section(5, "Section 2"));
-            //sections.add(new ProductSectionAdapter.Section(12, "Section 3"));
-            //sections.add(new ProductSectionAdapter.Section(14, "Section 4"));
-            //sections.add(new ProductSectionAdapter.Section(20, "Section 5"));
-
             this.productsAdapter.setProductsCollection(productModelCollection);
-
-            /*ProductSectionAdapter.Section[] dummy = new ProductSectionAdapter.Section[sections.size()];
-            ProductSectionAdapter mSectionedAdapter = new
-                    ProductSectionAdapter(getActivity(), R.layout.section, R.id.section_text, productsAdapter);
-            mSectionedAdapter.setSections(sections.toArray(dummy));*/
-
-            //Apply this adapter to the RecyclerView
             rv_products.setAdapter(productsAdapter);
-
-
         }
     }
 

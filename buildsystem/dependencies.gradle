@@ -33,7 +33,6 @@ ext {
     zxingCoreVersion = '3.0.1'
     picassoVersion = '2.5.2'
     expandableSelectorVersion = '1.0.0'
-    layoutCastVersion = '1.+@aar'
 
     //Testing
     robolectricVersion = '3.0'
@@ -59,7 +58,6 @@ ext {
             zxingCore:          "com.google.zxing:core:${zxingCoreVersion}",
             picasso:            "com.squareup.picasso:picasso:${picassoVersion}",
             expandableSelector: "com.karumi:expandableselector:${expandableSelectorVersion}",
-            layoutcast:         "com.github.mmin18.layoutcast:library:${layoutCastVersion}",
             rxJava:             "io.reactivex:rxjava:${rxJavaVersion}",
             rxAndroid:          "io.reactivex:rxandroid:${rxAndroidVersion}",
             javaxAnnotation:    "javax.annotation:jsr250-api:${javaxAnnotationVersion}",

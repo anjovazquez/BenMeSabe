@@ -9,6 +9,8 @@ public class ProductEntity {
     private String productName;
     private String description;
     private String imageURL;
+    private String productSection;
+    private Number productPrice;
 
     public String getProductName() {
         return productName;
@@ -40,5 +42,21 @@ public class ProductEntity {
 
     public void setProductId(Number productId) {
         this.productId = productId;
+    }
+
+    public String getProductSection() {
+        return productSection;
+    }
+
+    public void setProductSection(String productSection) {
+        this.productSection = productSection;
+    }
+
+    public Number getProductPrice() {
+        return productPrice;
+    }
+
+    public void setProductPrice(Number productPrice) {
+        this.productPrice = productPrice;
     }
 }

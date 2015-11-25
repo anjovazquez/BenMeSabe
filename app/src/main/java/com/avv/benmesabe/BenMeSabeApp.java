@@ -17,10 +17,6 @@ public class BenMeSabeApp extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
 
-        if (BuildConfig.DEBUG) {
-            //LayoutCast.init(this);
-        }
-
         this.initializeInjector();
     }
 

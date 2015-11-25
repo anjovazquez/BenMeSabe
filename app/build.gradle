@@ -45,7 +45,6 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.2'
 
     compile 'com.karumi:expandableselector:1.0.0'
-    compile 'com.github.mmin18.layoutcast:library:1.+@aar'
 }
 */
 apply plugin: 'com.android.application'
@@ -100,6 +99,14 @@ android {
         disable 'IconMissingDensityFolder'  //For testing purpose. This is safe to remove.
     }
 
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            zipAlignEnabled true
+        }
+    }
+
     /*signingConfigs {
         debug {
             storeFile file('../buildsystem/debug.keystore')
@@ -140,7 +147,6 @@ dependencies {
     compile presentationDependencies.zxingCore
     compile presentationDependencies.picasso
     compile presentationDependencies.expandableSelector
-    compile presentationDependencies.layoutcast
     provided presentationDependencies.javaxAnnotation
 
     compile 'com.marshalchen.ultimaterecyclerview:library:0.3.18'

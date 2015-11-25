@@ -3,7 +3,7 @@ package com.avv.benmesabe.presentation.view.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,15 +32,8 @@ public class OrderFragment extends Fragment implements OrderListView {
 
     public static final String NAME = "OrderFragment";
 
-    //@Bind(R.id.rvOrderProducts)
-    //RecyclerView rvOrderProducts;
-
     @Bind(R.id.rvOrderProducts)
     UltimateRecyclerView rvOrderProducts;
-
-
-
-    //private ProductAdapter productsAdapter;
 
     private UltimateProductAdapter productsAdapter;
 
@@ -70,13 +63,8 @@ public class OrderFragment extends Fragment implements OrderListView {
     }
 
     private void setupUI() {
-        //rvOrderProducts.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        //this.productsAdapter = new ProductAdapter(getActivity(), new ArrayList<Product>());
-        //this.productsAdapter.setOnProductItemClickListener(this);
-        //this.rvOrderProducts.setAdapter(productsAdapter);
 
-
-        rvOrderProducts.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
+        rvOrderProducts.setLayoutManager(new LinearLayoutManager(getActivity()));
         this.productsAdapter = new UltimateProductAdapter(getActivity(), new ArrayList<Product>());
         //StickyRecyclerHeadersDecoration headersDecor = new StickyRecyclerHeadersDecoration(productsAdapter);
         //rvOrderProducts.addItemDecoration(headersDecor);
