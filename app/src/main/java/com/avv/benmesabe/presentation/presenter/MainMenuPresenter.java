@@ -26,7 +26,7 @@ public class MainMenuPresenter extends DefaultSubscriber<Order> implements Prese
         this.postCustomerRequestUseCase = postCustomerRequestUseCase;
     }
 
-    private void postOrder() {
+    public void postOrder() {
         //this.hideViewRetry();
         this.showViewLoading();
         this.postOrderUseCase.execute(new OrderSubscriber());

@@ -43,6 +43,8 @@ public class OrderManager {
 
     public Order closeOrder(){
         Order closedOrder = currentOrder;
+        closedOrder.setOrderName("TRACACACACTRA");
+        closedOrder.setTableNo("t23");
         currentOrder = new Order();
         return closedOrder;
     }
