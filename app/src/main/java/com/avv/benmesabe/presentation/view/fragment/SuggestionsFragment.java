@@ -22,6 +22,8 @@ import com.avv.benmesabe.presentation.view.activity.DetailActivity;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 import com.marshalchen.ultimaterecyclerview.ui.DividerItemDecoration;
 
+import org.rocko.bpb.BounceProgressBar;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -39,6 +41,9 @@ public class SuggestionsFragment extends Fragment implements ProductListView, Ul
 
     @Bind(R.id.rv_products)
     UltimateRecyclerView rv_products;
+
+    @Bind(R.id.progress)
+    BounceProgressBar progress;
 
     @Inject
     ProductListPresenter productListPresenter;
@@ -111,12 +116,12 @@ public class SuggestionsFragment extends Fragment implements ProductListView, Ul
 
     @Override
     public void showLoading() {
-
+        progress.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideLoading() {
-
+        progress.setVisibility(View.GONE);
     }
 
     @Override
@@ -143,9 +148,6 @@ public class SuggestionsFragment extends Fragment implements ProductListView, Ul
     public void onProductItemClicked(Product product) {
         Intent intentDetail = new Intent(getActivity(), DetailActivity.class);
         intentDetail.putExtra(DetailActivity.EXTRA_PRODUCT_ID, product.getProductId());
-        intentDetail.putExtra(DetailActivity.EXTRA_PRODUCT_NAME, product.getProductName());
-        intentDetail.putExtra(DetailActivity.EXTRA_PRODUCT_IMAGEURL, product.getImageURL());
-        intentDetail.putExtra(DetailActivity.EXTRA_PRODUCT_DESC, product.getDescription());
 
         startActivity(intentDetail);
     }

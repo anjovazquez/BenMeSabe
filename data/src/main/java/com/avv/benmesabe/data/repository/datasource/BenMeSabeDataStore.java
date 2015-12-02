@@ -25,4 +25,6 @@ public interface BenMeSabeDataStore {
 
     Observable<CustomerRequest> postCustomerRequest(CustomerRequest customerRequest);
 
+    Observable<ProductEntity> getProductDetail(Number productId);
+
 }

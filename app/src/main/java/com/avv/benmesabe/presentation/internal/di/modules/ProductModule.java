@@ -5,6 +5,7 @@ import com.avv.benmesabe.domain.Order;
 import com.avv.benmesabe.domain.executor.PostExecutionThread;
 import com.avv.benmesabe.domain.executor.ThreadExecutor;
 import com.avv.benmesabe.domain.interactor.GetProductAllergens;
+import com.avv.benmesabe.domain.interactor.GetProductDetail;
 import com.avv.benmesabe.domain.interactor.GetProductIngredients;
 import com.avv.benmesabe.domain.interactor.GetProductList;
 import com.avv.benmesabe.domain.interactor.PostCustomerRequest;
@@ -81,11 +82,10 @@ public class ProductModule {
         return new PostCustomerRequest(customerRequest, benMeSabeRepository, threadExecutor, postExecutionThread);
     }
 
-    /*@Provides @PerActivity
-    @Named("productDetails") UseCase provideGetProductDetailsUseCase(
+    @Provides @PerActivity
+    @Named("productDetail") UseCase provideGetProductDetailsUseCase(
             BenMeSabeRepository benMeSabeRepository, ThreadExecutor threadExecutor,
             PostExecutionThread postExecutionThread) {
-        //return new GetUserDetails(userId, userRepository, threadExecutor, postExecutionThread);
-        return null;
-    }*/
+        return new GetProductDetail(productId, benMeSabeRepository, threadExecutor, postExecutionThread);
+    }
 }

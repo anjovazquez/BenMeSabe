@@ -17,7 +17,6 @@ import com.avv.benmesabe.domain.Allergen;
 import com.avv.benmesabe.domain.Ingredient;
 import com.avv.benmesabe.domain.Product;
 import com.avv.benmesabe.domain.order.OrderManager;
-import com.avv.benmesabe.presentation.view.activity.BaseActivity;
 import com.avv.benmesabe.presentation.adapter.IngredientAdapter;
 import com.avv.benmesabe.presentation.internal.di.HasComponent;
 import com.avv.benmesabe.presentation.internal.di.components.DaggerProductComponent;
@@ -41,29 +40,18 @@ import butterknife.ButterKnife;
 public class DetailActivity extends BaseActivity implements HasComponent<ProductComponent>, DetailProductView, IngredientAdapter.OnIngredientItemClickListener {
 
     public static final String EXTRA_PRODUCT_ID = "productId";
-    public static final String EXTRA_PRODUCT_NAME = "productName";
-    public static final String EXTRA_PRODUCT_IMAGEURL = "productImageURL";
-    public static final String EXTRA_PRODUCT_DESC = "productDescription";
-    public static final String EXTRA_PRODUCT_URL = "productURL";
+
+    private Product currentProduct;
+    private int productId;
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
 
-    /*@Bind(R.id.productDes)
-    TextView productDescription;*/
-
     @Bind(R.id.ingredientList)
     RecyclerView rvProductIngredients;
 
-
-
     @Bind(R.id.addProduct)
     FloatingActionButton bAddProduct;
-
-    private String imageURL;
-    private String description;
-    private Integer productId;
-    private String productName;
 
     @Inject
     DetailProductPresenter detailProductPresenter;
@@ -71,7 +59,9 @@ public class DetailActivity extends BaseActivity implements HasComponent<Product
     private ProductComponent productComponent;
     private IngredientAdapter productIngredientsAdapter;
 
+    private CollapsingToolbarLayout collapsingToolbar;
 
+    private ImageView imageView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -79,13 +69,13 @@ public class DetailActivity extends BaseActivity implements HasComponent<Product
         setContentView(R.layout.activity_detail);
         ButterKnife.bind(this);
 
-        CollapsingToolbarLayout collapsingToolbar =
+        collapsingToolbar =
                 (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
 
         Intent intent = getIntent();
-        String productURL = intent.getStringExtra(EXTRA_PRODUCT_URL);
+        productId = intent.getIntExtra(EXTRA_PRODUCT_ID, 0);
 
-        if (productURL == null){
+        /*if (productURL == null){
             productId = intent.getIntExtra(EXTRA_PRODUCT_ID, 0);
             productName = intent.getStringExtra(EXTRA_PRODUCT_NAME);
             imageURL = intent.getStringExtra(EXTRA_PRODUCT_IMAGEURL);
@@ -94,6 +84,9 @@ public class DetailActivity extends BaseActivity implements HasComponent<Product
             loadBackdrop();
             collapsingToolbar.setTitle(productName);
         }
+        else{
+            productId = Integer.parseInt(productURL.substring(productURL.indexOf("/")+1));
+        }*/
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -111,16 +104,13 @@ public class DetailActivity extends BaseActivity implements HasComponent<Product
         bAddProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Product product = new Product();
-                product.setProductId(productId);
-                product.setProductName(productName);
-                product.setImageURL(imageURL);
-                product.setDescription(description);
-                OrderManager.getInstance().addProduct(product);
-
+                OrderManager.getInstance().addProduct(currentProduct);
                 finish();
             }
         });
+
+
+       imageView = (ImageView) findViewById(R.id.backdrop);
     }
 
     @Override
@@ -134,8 +124,7 @@ public class DetailActivity extends BaseActivity implements HasComponent<Product
     }
 
     private void loadBackdrop() {
-        final ImageView imageView = (ImageView) findViewById(R.id.backdrop);
-        Picasso.with(this).load(imageURL).into(imageView);
+        Picasso.with(this).load(currentProduct.getImageURL()).into(imageView);
     }
 
     private void initializeInjector() {
@@ -184,6 +173,13 @@ public class DetailActivity extends BaseActivity implements HasComponent<Product
                 }
             }
         }
+    }
+
+    @Override
+    public void renderProductDetail(Product product) {
+        this.currentProduct = product;
+        loadBackdrop();
+        collapsingToolbar.setTitle(product.getProductName());
     }
 
     private void hideAllergenIcons(){

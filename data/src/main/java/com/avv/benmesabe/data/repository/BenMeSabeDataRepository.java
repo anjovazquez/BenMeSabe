@@ -56,4 +56,11 @@ public class BenMeSabeDataRepository implements BenMeSabeRepository {
         final BenMeSabeDataStore benMeSabeDataStore = this.benMeSabeDataStoreFactory.createCloudDataStore();
         return benMeSabeDataStore.postCustomerRequest(customerRequest);
     }
+
+
+    @Override
+    public Observable<Product> getProductDetail(Number productId) {
+        final BenMeSabeDataStore benMeSabeDataStore = this.benMeSabeDataStoreFactory.createCloudDataStore();
+        return benMeSabeDataStore.getProductDetail(productId).map(productEntity -> this.benMeSabeDataMapper.transform(productEntity));
+    }
 }

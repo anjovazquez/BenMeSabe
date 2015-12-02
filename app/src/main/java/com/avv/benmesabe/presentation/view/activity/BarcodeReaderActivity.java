@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
@@ -275,7 +276,7 @@ public class BarcodeReaderActivity extends BaseActivity implements HasComponent<
         this.dialog = new NFCActionDialogFragment();
 
         Bundle args = new Bundle();
-        args.putString("text", "Read NFC");
+        args.putString("text", "Acerque el dispositivo a la etiqueta de producto");
         args.putString("textButton", "Cancelar");
         dialog.setArguments(args);
         this.dialog.show(getSupportFragmentManager(), "nfc_writer");
@@ -296,11 +297,15 @@ public class BarcodeReaderActivity extends BaseActivity implements HasComponent<
         if (result != null) {
             String contents = result.getContents();
             if (contents != null) {
-                Toast toast = Toast.makeText(this, result.toString(), Toast.LENGTH_SHORT);
-                toast.show();
-            } else {
-                Toast toast = Toast.makeText(this, "Error " + result.toString(), Toast.LENGTH_SHORT);
-                toast.show();
+                Intent intentDetail = new Intent(BarcodeReaderActivity.this, DetailActivity.class);
+                contents = contents.replace("http://", "");
+                intentDetail.putExtra(DetailActivity.EXTRA_PRODUCT_ID, Integer.parseInt(contents.substring(contents.indexOf("/")+1)));
+
+                startActivity(intentDetail);
+            }
+            else {
+                Snackbar.make(avatar, "No se ha detectado ningún producto", Snackbar.LENGTH_LONG)
+                        .show();
             }
         }
     }
@@ -342,7 +347,7 @@ public class BarcodeReaderActivity extends BaseActivity implements HasComponent<
             }
 
             Intent intentDetail = new Intent(BarcodeReaderActivity.this, DetailActivity.class);
-            intentDetail.putExtra(DetailActivity.EXTRA_PRODUCT_URL, "producto");
+            intentDetail.putExtra(DetailActivity.EXTRA_PRODUCT_ID, Integer.parseInt(readResult.substring(readResult.indexOf("/")+1)));
 
             startActivity(intentDetail);
 
@@ -387,17 +392,14 @@ public class BarcodeReaderActivity extends BaseActivity implements HasComponent<
                 switch (index) {
                     case 1:
                         ExpandableItem firstItem = scanOptionSelector.getExpandableItem(1);
-                        //swipeFirstItem(1, firstItem);
                         scanNFC();
                         break;
                     case 2:
                         ExpandableItem secondItem = scanOptionSelector.getExpandableItem(2);
-                        //swipeFirstItem(2, secondItem);
                         scanQR();
                         break;
                     case 3:
                         ExpandableItem thirdItem = scanOptionSelector.getExpandableItem(3);
-                        //swipeFirstItem(3, fourthItem);
                         break;
                     default:
                 }
@@ -442,13 +444,11 @@ public class BarcodeReaderActivity extends BaseActivity implements HasComponent<
                 switch (index) {
                     case 1:
                         ExpandableItem firstItem = scanOptionSelector.getExpandableItem(1);
-                        //swipeFirstItem(1, firstItem);
                         order = OrderManager.getInstance().closeOrder();
                         mainMenuPresenter.postOrder();
                         break;
                     case 2:
                         ExpandableItem secondItem = scanOptionSelector.getExpandableItem(2);
-                        //swipeFirstItem(1, firstItem);
                         break;
                     default:
                 }

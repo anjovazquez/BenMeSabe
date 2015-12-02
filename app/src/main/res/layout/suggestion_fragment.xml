@@ -1,13 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:bpb="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.marshalchen.ultimaterecyclerview.UltimateRecyclerView
-        android:id="@+id/rv_products"
-        android:scrollbars="vertical"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="match_parent">
+
+
+        <com.marshalchen.ultimaterecyclerview.UltimateRecyclerView
+            android:id="@+id/rv_products"
+            android:scrollbars="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            app:recyclerviewEmptyView="@layout/empty_view"/>
+
+
+        <org.rocko.bpb.BounceProgressBar
+            android:id="@+id/progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            bpb:shape="circle"
+            bpb:singleSrcSize="14dp"
+            bpb:speed="250"
+            bpb:src="#6495ED"
+            android:layout_gravity="center"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"/>
+    </RelativeLayout>
 
     <TextView
         android:layout_width="match_parent"

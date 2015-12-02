@@ -18,10 +18,10 @@ public class BenMeSabeIntro extends AppIntro {
 
         // Add your slide's fragments here
         // AppIntro will automatically generate the dots indicator and buttons.
-        addSlide(AppIntroFragment.newInstance("Title1", "Description1", R.drawable.nfc, R.color.primary));
-        addSlide(AppIntroFragment.newInstance("Title2", "Description2", R.drawable.qr_rounded, R.color.primary));
-        addSlide(AppIntroFragment.newInstance("Title3", "Description3", R.drawable.nfc, R.color.primary));
-        addSlide(AppIntroFragment.newInstance("Title4", "Description4", R.drawable.qr_rounded, R.color.primary));
+        addSlide(AppIntroFragment.newInstance("Carta", "Descubre nuestras sugerencias", R.drawable.sugerencias, R.color.primary));
+        addSlide(AppIntroFragment.newInstance("Escanea", "Puedes también escanear la carta mediante QR o NFC", R.drawable.escanea, R.color.primary));
+        addSlide(AppIntroFragment.newInstance("Pide", "Elabora tu pedido", R.drawable.pedido, R.color.primary));
+        //addSlide(AppIntroFragment.newInstance("Title4", "Description4", R.drawable.qr_rounded, R.color.primary));
 
         // Instead of fragments, you can also use our default slide
         // Just set a title, description, background and image. AppIntro will do the rest

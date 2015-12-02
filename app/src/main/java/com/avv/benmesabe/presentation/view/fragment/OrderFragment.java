@@ -19,6 +19,8 @@ import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 import com.marshalchen.ultimaterecyclerview.animators.SlideInLeftAnimator;
 import com.marshalchen.ultimaterecyclerview.itemTouchHelper.SimpleItemTouchHelperCallback;
 
+import org.rocko.bpb.BounceProgressBar;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -34,6 +36,9 @@ public class OrderFragment extends Fragment implements OrderListView {
 
     @Bind(R.id.rvOrderProducts)
     UltimateRecyclerView rvOrderProducts;
+
+    @Bind(R.id.progress)
+    BounceProgressBar progress;
 
     private UltimateProductAdapter productsAdapter;
 
@@ -86,9 +91,11 @@ public class OrderFragment extends Fragment implements OrderListView {
      */
     private void loadProductOrderList() {
        // this.productListPresenter.initialize();
+        showLoading();
         if(OrderManager.getInstance().getProductOrderList()!=null) {
             productsAdapter.setProductsCollection(OrderManager.getInstance().getProductOrderList());
         }
+        hideLoading();
     }
 
     @Override
@@ -100,11 +107,13 @@ public class OrderFragment extends Fragment implements OrderListView {
 
     @Override
     public void showLoading() {
+        progress.setVisibility(View.VISIBLE);
 
     }
 
     @Override
     public void hideLoading() {
+        progress.setVisibility(View.GONE);
 
     }
 

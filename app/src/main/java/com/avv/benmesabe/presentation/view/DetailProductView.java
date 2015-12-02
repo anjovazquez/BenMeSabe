@@ -2,6 +2,7 @@ package com.avv.benmesabe.presentation.view;
 
 import com.avv.benmesabe.domain.Allergen;
 import com.avv.benmesabe.domain.Ingredient;
+import com.avv.benmesabe.domain.Product;
 
 import java.util.Collection;
 
@@ -18,5 +19,7 @@ public interface DetailProductView extends LoadDataView {
     void renderProductIngredientsList(Collection<Ingredient> productIngredientsModelCollection);
 
     void renderProductAllergensList(Collection<Allergen> productAllergensModelCollection);
+
+    void renderProductDetail(Product product);
 
 }

@@ -19,4 +19,5 @@ public interface BenMeSabeRepository {
     Observable<List<Allergen>> getProductAllergens(Number productId);
     Observable<Order> postOrder(Order order);
     Observable<CustomerRequest> postCustomerRequest(CustomerRequest customerRequest);
+    Observable<Product> getProductDetail(Number productId);
 }

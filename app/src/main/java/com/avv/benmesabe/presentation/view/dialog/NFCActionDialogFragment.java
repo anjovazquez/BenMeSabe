@@ -52,7 +52,7 @@ public class NFCActionDialogFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        this.getDialog().setTitle("Acción NFC");
+        this.getDialog().setTitle("Scanee producto");
 
         View view = inflater.inflate(R.layout.nfc_write_dialog, container,
                 false);

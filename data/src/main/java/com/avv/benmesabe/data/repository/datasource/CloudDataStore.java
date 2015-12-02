@@ -41,7 +41,7 @@ public class CloudDataStore implements BenMeSabeDataStore {
         Call<List<ProductEntity>> listProduct();
 
         @GET("/RestMenus/product/{productId}")
-        Call<List<ProductEntity>> getProduct(@Path("productId") Number productId);
+        Call<ProductEntity> getProduct(@Path("productId") Number productId);
 
         @GET("/RestMenus/product/{productId}/ingredient")
         Call<List<IngredientEntity>> listProductIngredients(@Path("productId") Number productId);
@@ -144,6 +144,26 @@ public class CloudDataStore implements BenMeSabeDataStore {
                     Call<List<AllergenEntity>> productAllergensCAll = benMeSabeService.listProductAllergens(productId);
                     Response<List<AllergenEntity>> allergensResponse = productAllergensCAll.execute();
                     subscriber.onNext(allergensResponse.body());
+                    subscriber.onCompleted();
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                    subscriber.onError(new Exception(e.getMessage()));
+                }
+            }
+        });
+    }
+
+    @Override
+    public Observable<ProductEntity> getProductDetail(final Number productId) {
+        return Observable.create(new Observable.OnSubscribe<ProductEntity>(){
+            @Override
+            public void call(Subscriber<? super ProductEntity> subscriber) {
+
+                try{
+                    Call<ProductEntity> productCall = benMeSabeService.getProduct(productId);
+                    Response<ProductEntity> productResponse = productCall.execute();
+                    subscriber.onNext(productResponse.body());
                     subscriber.onCompleted();
                 }
                 catch (Exception e){

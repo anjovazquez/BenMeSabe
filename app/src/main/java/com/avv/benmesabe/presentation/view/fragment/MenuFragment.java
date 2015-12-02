@@ -26,6 +26,8 @@ import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 import com.marshalchen.ultimaterecyclerview.itemTouchHelper.SimpleItemTouchHelperCallback;
 import com.marshalchen.ultimaterecyclerview.ui.DividerItemDecoration;
 
+import org.rocko.bpb.BounceProgressBar;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -43,6 +45,9 @@ public class MenuFragment extends Fragment implements ProductListView, CategoryP
 
     @Bind(R.id.rv_products_menu)
     UltimateRecyclerView rv_products_menu;
+
+    @Bind(R.id.progress)
+    BounceProgressBar progress;
 
     private UltimateProductAdapter productsAdapter;
 
@@ -151,11 +156,13 @@ public class MenuFragment extends Fragment implements ProductListView, CategoryP
 
     @Override
     public void showLoading() {
+        progress.setVisibility(View.VISIBLE);
 
     }
 
     @Override
     public void hideLoading() {
+        progress.setVisibility(View.GONE);
 
     }
 
@@ -178,9 +185,6 @@ public class MenuFragment extends Fragment implements ProductListView, CategoryP
     public void onProductItemClicked(Product product) {
         Intent intentDetail = new Intent(getActivity(), DetailActivity.class);
         intentDetail.putExtra(DetailActivity.EXTRA_PRODUCT_ID, product.getProductId());
-        intentDetail.putExtra(DetailActivity.EXTRA_PRODUCT_NAME, product.getProductName());
-        intentDetail.putExtra(DetailActivity.EXTRA_PRODUCT_IMAGEURL, product.getImageURL());
-        intentDetail.putExtra(DetailActivity.EXTRA_PRODUCT_DESC, product.getDescription());
 
         getActivity().startActivity(intentDetail, ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity()).toBundle());
     }
