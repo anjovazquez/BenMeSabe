@@ -16,7 +16,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
-            app:recyclerviewEmptyView="@layout/empty_view"/>
+            />
+
+        <!--app:recyclerviewEmptyView="@layout/empty_view"-->
 
 
         <org.rocko.bpb.BounceProgressBar

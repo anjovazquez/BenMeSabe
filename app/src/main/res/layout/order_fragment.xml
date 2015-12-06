@@ -13,8 +13,7 @@
     <com.marshalchen.ultimaterecyclerview.UltimateRecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/rvOrderProducts"
-        app:recyclerviewEmptyView="@layout/empty_view">
+        android:id="@+id/rvOrderProducts">
 
         <!--app:recyclerviewEmptyView="@layout/empty_view"-->
     </com.marshalchen.ultimaterecyclerview.UltimateRecyclerView>

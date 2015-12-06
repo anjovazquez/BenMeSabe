@@ -73,8 +73,8 @@ public class BenMeSabeGcmListenerService extends GcmListenerService {
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this);
 
-        notificationBuilder.setSmallIcon(R.drawable.ic_dashboard)
-                .setContentTitle("GCM Message")
+        notificationBuilder.setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle("BenMeSabe")
                 .setContentText(message)
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)

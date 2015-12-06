@@ -10,6 +10,7 @@ public class Order {
 
     private String tableNo;
     private String orderName;
+    private String customerToken;
     private List<Product> productList;
 
     public void addProduct(Product product){
@@ -37,6 +38,14 @@ public class Order {
 
     public void setOrderName(String orderName) {
         this.orderName = orderName;
+    }
+
+    public String getCustomerToken() {
+        return customerToken;
+    }
+
+    public void setCustomerToken(String customerToken) {
+        this.customerToken = customerToken;
     }
 
     public List<Product> getProductList() {

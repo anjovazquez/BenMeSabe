@@ -29,5 +29,7 @@ public class PostOrder extends UseCase {
         return this.benMeSabeRepository.postOrder(order);
     }
 
-
+    public void setOrder(Order order) {
+        this.order = order;
+    }
 }

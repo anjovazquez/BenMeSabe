@@ -1,10 +1,14 @@
 package com.avv.benmesabe.presentation.presenter;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 
 import com.avv.benmesabe.domain.Order;
 import com.avv.benmesabe.domain.interactor.DefaultSubscriber;
+import com.avv.benmesabe.domain.interactor.PostOrder;
 import com.avv.benmesabe.domain.interactor.UseCase;
+import com.avv.benmesabe.presentation.gcm.service.BenMeSabePreferences;
 import com.avv.benmesabe.presentation.view.MainMenuView;
 
 import javax.inject.Inject;
@@ -26,9 +30,13 @@ public class MainMenuPresenter extends DefaultSubscriber<Order> implements Prese
         this.postCustomerRequestUseCase = postCustomerRequestUseCase;
     }
 
-    public void postOrder() {
+    public void postOrder(Order order) {
         //this.hideViewRetry();
         this.showViewLoading();
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mainMenuView.getContext());
+        order.setCustomerToken(sharedPreferences.getString(BenMeSabePreferences.CURRENT_TOKEN, ""));
+        ((PostOrder)postOrderUseCase).setOrder(order);
         this.postOrderUseCase.execute(new OrderSubscriber());
     }
 

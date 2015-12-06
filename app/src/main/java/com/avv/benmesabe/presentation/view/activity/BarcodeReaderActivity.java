@@ -445,7 +445,7 @@ public class BarcodeReaderActivity extends BaseActivity implements HasComponent<
                     case 1:
                         ExpandableItem firstItem = scanOptionSelector.getExpandableItem(1);
                         order = OrderManager.getInstance().closeOrder();
-                        mainMenuPresenter.postOrder();
+                        mainMenuPresenter.postOrder(order);
                         break;
                     case 2:
                         ExpandableItem secondItem = scanOptionSelector.getExpandableItem(2);
