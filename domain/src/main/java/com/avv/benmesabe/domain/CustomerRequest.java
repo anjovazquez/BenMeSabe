@@ -8,6 +8,7 @@ public class CustomerRequest {
     private String tableNo;
     private String type;
     private String idCompany;
+    private String customerToken;
 
     public String getTableNo() {
         return tableNo;
@@ -33,12 +34,21 @@ public class CustomerRequest {
         this.idCompany = idCompany;
     }
 
+    public String getCustomerToken() {
+        return customerToken;
+    }
+
+    public void setCustomerToken(String customerToken) {
+        this.customerToken = customerToken;
+    }
+
     @Override
     public String toString() {
         return "CustomerRequest{" +
                 "tableNo='" + tableNo + '\'' +
                 ", type='" + type + '\'' +
                 ", idCompany='" + idCompany + '\'' +
+                ", customerToken='" + customerToken + '\'' +
                 '}';
     }
 }

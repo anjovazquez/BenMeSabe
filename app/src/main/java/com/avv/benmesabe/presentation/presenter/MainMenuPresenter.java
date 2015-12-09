@@ -4,8 +4,10 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 
+import com.avv.benmesabe.domain.CustomerRequest;
 import com.avv.benmesabe.domain.Order;
 import com.avv.benmesabe.domain.interactor.DefaultSubscriber;
+import com.avv.benmesabe.domain.interactor.PostCustomerRequest;
 import com.avv.benmesabe.domain.interactor.PostOrder;
 import com.avv.benmesabe.domain.interactor.UseCase;
 import com.avv.benmesabe.presentation.gcm.service.BenMeSabePreferences;
@@ -40,6 +42,14 @@ public class MainMenuPresenter extends DefaultSubscriber<Order> implements Prese
         this.postOrderUseCase.execute(new OrderSubscriber());
     }
 
+    public void postCustomerRequest(CustomerRequest request){
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mainMenuView.getContext());
+        request.setCustomerToken(sharedPreferences.getString(BenMeSabePreferences.CURRENT_TOKEN, ""));
+        ((PostCustomerRequest)postCustomerRequestUseCase).setCustomerRequest(request);
+        this.postCustomerRequestUseCase.execute(new CustomerRequestSubscriber());
+    }
+
     public void setView(@NonNull MainMenuView view) {
         this.mainMenuView = view;
     }
@@ -58,6 +68,10 @@ public class MainMenuPresenter extends DefaultSubscriber<Order> implements Prese
 
     private void showOrderInView(Order order) {
         mainMenuView.showOrderInView(order);
+    }
+
+    private void showCustomerRequestInView(CustomerRequest customerRequest) {
+        mainMenuView.showCustomerRequestInView(customerRequest);
     }
 
 
@@ -91,6 +105,24 @@ public class MainMenuPresenter extends DefaultSubscriber<Order> implements Prese
 
         @Override public void onNext(Order order) {
             showOrderInView(order);
+        }
+    }
+
+    private final class CustomerRequestSubscriber extends DefaultSubscriber<CustomerRequest> {
+
+        @Override public void onCompleted() {
+            hideViewLoading();
+        }
+
+        @Override public void onError(Throwable e) {
+            hideViewLoading();
+            ((Exception) e).printStackTrace();
+            //showErrorMessage(new DefaultErrorBundle((Exception) e));
+            showViewRetry();
+        }
+
+        @Override public void onNext(CustomerRequest customerRequest) {
+            showCustomerRequestInView(customerRequest);
         }
     }
 }

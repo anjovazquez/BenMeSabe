@@ -35,6 +35,7 @@ public class BenMeSabeIntro extends AppIntro {
         // Hide Skip/Done button
         showSkipButton(false);
         showDoneButton(true);
+        setDoneText("Listo");
 
         // Turn vibration on and set intensity
         // NOTE: you will probably need to ask VIBRATE permesssion in Manifest

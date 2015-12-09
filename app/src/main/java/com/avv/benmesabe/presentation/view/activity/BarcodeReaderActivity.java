@@ -27,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.avv.benmesabe.R;
+import com.avv.benmesabe.domain.CustomerRequest;
 import com.avv.benmesabe.domain.Order;
 import com.avv.benmesabe.domain.order.OrderManager;
 import com.avv.benmesabe.picasso.CircleTransform;
@@ -38,7 +39,9 @@ import com.avv.benmesabe.presentation.internal.di.components.ProductComponent;
 import com.avv.benmesabe.presentation.internal.di.modules.ProductModule;
 import com.avv.benmesabe.presentation.presenter.MainMenuPresenter;
 import com.avv.benmesabe.presentation.view.MainMenuView;
+import com.avv.benmesabe.presentation.view.dialog.CustomerRequestDialogFragment;
 import com.avv.benmesabe.presentation.view.dialog.NFCActionDialogFragment;
+import com.avv.benmesabe.presentation.view.dialog.OrderActionDialogFragment;
 import com.avv.benmesabe.presentation.view.fragment.MenuFragmentPageAdapter;
 import com.avv.benmesabe.presentation.view.fragment.OrderFragment;
 import com.google.android.gms.common.ConnectionResult;
@@ -59,7 +62,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 
-public class BarcodeReaderActivity extends BaseActivity implements HasComponent<ProductComponent>, MainMenuView {
+public class BarcodeReaderActivity extends BaseActivity implements HasComponent<ProductComponent>, MainMenuView, OrderActionDialogFragment.OnSendOrderListener, CustomerRequestDialogFragment.OnSendCustomerRequestListener {
 
     private static final String TAG = "BarcodeReaderActivity";
 
@@ -248,6 +251,15 @@ public class BarcodeReaderActivity extends BaseActivity implements HasComponent<
                 return false;
             }
         });
+
+        MenuItem navCustomerRequest = navigationView.getMenu().findItem(R.id.nav_customer);
+        navCustomerRequest.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                sendCustomerRequest();
+                return false;
+            }
+        });
     }
 
     private void initializeInjector() {
@@ -381,7 +393,9 @@ public class BarcodeReaderActivity extends BaseActivity implements HasComponent<
 
     private void initializeScanOptionsExpandableSelector() {
         List<ExpandableItem> expandableItems = new ArrayList<ExpandableItem>();
-        expandableItems.add(new ExpandableItem("Scan"));
+        ExpandableItem item  = new ExpandableItem();
+        item.setResourceId(R.drawable.scanqrnfc);
+        expandableItems.add(item);
         expandableItems.add(new ExpandableItem("NFC"));
         expandableItems.add(new ExpandableItem("QR"));
         scanOptionSelector.showExpandableItems(expandableItems);
@@ -434,8 +448,12 @@ public class BarcodeReaderActivity extends BaseActivity implements HasComponent<
 
     private void initializeOrderExpandableSelector() {
         List<ExpandableItem> expandableItems = new ArrayList<ExpandableItem>();
-        expandableItems.add(new ExpandableItem("Opt"));
-        expandableItems.add(new ExpandableItem("Close"));
+        ExpandableItem itemOrder = new ExpandableItem();
+        ExpandableItem itemClose = new ExpandableItem();
+        itemOrder.setResourceId(R.drawable.writing46);
+        itemClose.setResourceId(R.drawable.origami28);
+        expandableItems.add(itemOrder);
+        expandableItems.add(itemClose);
         scanOptionSelector.showExpandableItems(expandableItems);
 
         scanOptionSelector.setOnExpandableItemClickListener(new OnExpandableItemClickListener() {
@@ -444,8 +462,10 @@ public class BarcodeReaderActivity extends BaseActivity implements HasComponent<
                 switch (index) {
                     case 1:
                         ExpandableItem firstItem = scanOptionSelector.getExpandableItem(1);
-                        order = OrderManager.getInstance().closeOrder();
-                        mainMenuPresenter.postOrder(order);
+
+
+                        showOrderDialog();
+
                         break;
                     case 2:
                         ExpandableItem secondItem = scanOptionSelector.getExpandableItem(2);
@@ -457,9 +477,54 @@ public class BarcodeReaderActivity extends BaseActivity implements HasComponent<
         });
     }
 
+    OrderActionDialogFragment orderDialog;
+
+    public void showOrderDialog(){
+        orderDialog = new OrderActionDialogFragment();
+
+        orderDialog.setOnSendOrderListener(this);
+        Bundle args = new Bundle();
+        args.putString("text", "Se está enviando su pedido");
+        args.putString("textButton", "Aceptar");
+        orderDialog.setArguments(args);
+        orderDialog.show(getSupportFragmentManager(), "order_action");
+    }
+
+    @Override
+    public void sendOrderListener(String tableNo, String orderName) {
+        order = OrderManager.getInstance().closeOrder();
+        order.setOrderName(orderName);
+        order.setTableNo(tableNo);
+        mainMenuPresenter.postOrder(order);
+    }
+
     @Override
     public void showOrderInView(Order order) {
+        orderDialog.setOrderSended();
+    }
 
+    CustomerRequestDialogFragment customerDialog;
+    public void sendCustomerRequest() {
+        customerDialog = new CustomerRequestDialogFragment();
+
+        customerDialog.setOnSendCustomerRequestListener(this);
+        Bundle args = new Bundle();
+        args.putString("text", "Elija el motivo de la consulta");
+        args.putString("textButton", "Aceptar");
+        customerDialog.setArguments(args);
+        customerDialog.show(getSupportFragmentManager(), "customer_action");
+    }
+
+    @Override
+    public void sendCustomerRequestListener(String requestType) {
+        CustomerRequest customerRequest = new CustomerRequest();
+        customerRequest.setType(requestType);
+        mainMenuPresenter.postCustomerRequest(customerRequest);
+    }
+
+    @Override
+    public void showCustomerRequestInView(CustomerRequest order) {
+        customerDialog.setCustomerRequestSended();
     }
 
     @Override

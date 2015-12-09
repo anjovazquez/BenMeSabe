@@ -8,6 +8,19 @@
     <string name="ipsum">Producto</string>
     <string name="menu_settings">Ajustes</string>
 
+    <string name="orderInfo">Se está enviando su pedido</string>
+
+    <string name="orderName">Nombre</string>
+    <string name="tableNo">Número de mesa</string>
+
+
+    <string-array name="textRequests">
+        <item>Información sobre producto</item>
+        <item>Recomendación personal del chef</item>
+        <item>Mi pedido tarda mucho</item>
+        <item>Consulta sobre la composición de un producto</item>
+        <item>La cuenta</item>
+    </string-array>
 
     //Exception messages
     <string name="exception_message_generic">There was an application error</string>

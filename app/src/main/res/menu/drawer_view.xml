@@ -16,30 +16,35 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_intro"
+            android:icon="@drawable/cutlery22"
+            android:title="Intro" />
+        <item
+            android:id="@+id/nav_suggestion"
+            android:icon="@drawable/menu21"
+            android:title="Sugerencias" />
+        <item
+            android:id="@+id/nav_order"
+            android:icon="@drawable/origami28"
+            android:title="Pedido" />
+        <item
+            android:id="@+id/nav_customer"
+            android:icon="@drawable/writing46"
+            android:title="Petición" />
         <item android:title="Escanea">
             <menu>
                 <item
                     android:id="@+id/nav_scan_nfc"
-                    android:icon="@drawable/ic_dashboard"
+                    android:icon="@drawable/nfc1"
                     android:title="NFC" />
                 <item
                     android:id="@+id/nav_scan_qr"
-                    android:icon="@drawable/ic_forum"
+                    android:icon="@drawable/blackberry4"
                     android:title="QR" />
             </menu>
         </item>
-        <item
-            android:id="@+id/nav_suggestion"
-            android:icon="@drawable/ic_dashboard"
-            android:title="Sugerencias" />
-        <item
-            android:id="@+id/nav_order"
-            android:icon="@drawable/ic_forum"
-            android:title="Pedido" />
-        <item
-            android:id="@+id/nav_intro"
-            android:icon="@drawable/ic_forum"
-            android:title="Intro" />
+
     </group>
 
     <!-- <item android:title="Sub items">

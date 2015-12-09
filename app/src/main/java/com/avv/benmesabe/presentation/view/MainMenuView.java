@@ -1,5 +1,6 @@
 package com.avv.benmesabe.presentation.view;
 
+import com.avv.benmesabe.domain.CustomerRequest;
 import com.avv.benmesabe.domain.Order;
 
 /**
@@ -7,4 +8,5 @@ import com.avv.benmesabe.domain.Order;
  */
 public interface MainMenuView extends LoadDataView {
     void showOrderInView(Order order);
+    void showCustomerRequestInView(CustomerRequest order);
 }

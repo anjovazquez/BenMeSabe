@@ -29,5 +29,7 @@ public class PostCustomerRequest extends UseCase {
         return this.benMeSabeRepository.postCustomerRequest(customerRequest);
     }
 
-
+    public void setCustomerRequest(CustomerRequest customerRequest) {
+        this.customerRequest = customerRequest;
+    }
 }
